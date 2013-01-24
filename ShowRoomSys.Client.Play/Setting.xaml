@@ -1,0 +1,44 @@
+﻿<Window x:Class="ShowRoomSys.Client.Play.Setting"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="系统设置" Height="300" Width="300">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0" Grid.Row="0" x:Name="ServerPath">服务器文件目录:</TextBlock>
+        <TextBox Grid.Column="1" Grid.Row="0"></TextBox>
+        <TextBlock Grid.Column="0" Grid.Row="1">本机所在展厅:</TextBlock>
+        <TextBox Grid.Column="1" Grid.Row="1"></TextBox>
+        <TextBlock Grid.Column="0" Grid.Row="2">启动时全屏:</TextBlock>
+        <CheckBox Grid.Column="1" Grid.Row="2" x:Name="FullScreen"></CheckBox>
+        <TextBlock Grid.Column="0" Grid.Row="3">本地文件存储路径:</TextBlock>
+        <Grid Grid.Row="3" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150px"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" x:Name="LocalPath"></TextBox>
+            <Button Grid.Column="1" x:Name="FilePathChoose"  Content="选择" Click="Button_Click"></Button>
+        </Grid>
+        <TextBlock Grid.Column="0" Grid.Row="4" x:Name="tb_BackGround">选择背景图片:</TextBlock>
+        <Grid Grid.Row="4" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150px"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" ></TextBox>
+            <Button Grid.Column="1" x:Name="BGChoose" Content="选择" Click="BGChoose_Click"></Button>
+        </Grid>
+        <Button x:Name="Save" Content="保存" Grid.Row="5" Grid.Column="1" Width="100px" HorizontalAlignment="Right" Click="Save_Click"></Button>
+    </Grid>
+</Window>

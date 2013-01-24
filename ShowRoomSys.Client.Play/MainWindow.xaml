@@ -1,0 +1,11 @@
+﻿<Window x:Class="ShowRoomSys.Client.Play.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mediaControl="clr-namespace:AxWMPLib;assembly=AxInterop.WMPLib"
+        Title="展厅展示" Height="350" Width="525" Loaded="Window_Loaded" Closing="Window_Closing" Icon="/ShowRoomSys.Client.Play;component/Icon/play.ico" >
+    <Grid>
+        <Frame x:Name="PageContext" BorderThickness="1" NavigationUIVisibility="Hidden" Content="">
+            
+        </Frame>
+    </Grid>
+</Window>

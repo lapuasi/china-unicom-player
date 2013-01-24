@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="7ee49e36-6466-43d2-807d-9adc89029062" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://jacky-pc:8732/Design_Time_Addresses/ShowRoomSys.Service/Service1/mex" Protocol="mex" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="b96679e4-0971-4fa1-a3a9-7f7c2c1ddcc7" SourceId="1" SourceUrl="http://jacky-pc:8732/Design_Time_Addresses/ShowRoomSys.Service/Service1/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="867a4108-71f3-47e6-90d8-bb9553de2029" SourceId="1" SourceUrl="http://jacky-pc:8732/Design_Time_Addresses/ShowRoomSys.Service/Service1/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="f16d02dd-f806-4727-94d9-af5d74afea58" SourceId="1" SourceUrl="http://jacky-pc:8732/Design_Time_Addresses/ShowRoomSys.Service/Service1/mex" />
+    <MetadataFile FileName="ShowRoomSys.Service.xsd" MetadataType="Schema" ID="c999a567-4ef0-4463-a87e-3ef428f15d89" SourceId="1" SourceUrl="http://jacky-pc:8732/Design_Time_Addresses/ShowRoomSys.Service/Service1/mex" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

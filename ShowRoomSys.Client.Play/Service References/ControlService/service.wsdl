@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="MainControl" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="NetTcpBinding_IMainControl_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <msb:BinaryEncoding xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1" />
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <msf:WindowsTransportSecurity xmlns:msf="http://schemas.microsoft.com/ws/2006/05/framing/policy">
+                  <msf:ProtectionLevel>EncryptAndSign</msf:ProtectionLevel>
+                </msf:WindowsTransportSecurity>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import namespace="http://tempuri.org/" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/ShowRoomSys.Service" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IMainControl_RegisterClient_InputMessage">
+    <wsdl:part name="parameters" element="tns:RegisterClient" />
+  </wsdl:message>
+  <wsdl:message name="IMainControl_RegisterClient_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RegisterClientResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMainControl_Option1_InputMessage">
+    <wsdl:part name="parameters" element="tns:Option1" />
+  </wsdl:message>
+  <wsdl:message name="IMainControl_Option1_OutputMessage">
+    <wsdl:part name="parameters" element="tns:Option1Response" />
+  </wsdl:message>
+  <wsdl:message name="IMainControl_Option2_InputMessage">
+    <wsdl:part name="parameters" element="tns:Option2" />
+  </wsdl:message>
+  <wsdl:message name="IMainControl_Option2_OutputMessage">
+    <wsdl:part name="parameters" element="tns:Option2Response" />
+  </wsdl:message>
+  <wsdl:message name="IMainControl_Option3_InputMessage">
+    <wsdl:part name="parameters" element="tns:Option3" />
+  </wsdl:message>
+  <wsdl:message name="IMainControl_Option3_OutputMessage">
+    <wsdl:part name="parameters" element="tns:Option3Response" />
+  </wsdl:message>
+  <wsdl:message name="IMainControl_GetOnLineStatus_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetOnLineStatus" />
+  </wsdl:message>
+  <wsdl:message name="IMainControl_GetOnLineStatus_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetOnLineStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMainControl_SendMessage_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SendMessage" />
+  </wsdl:message>
+  <wsdl:message name="IMainControl_SendMessages_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SendMessages" />
+  </wsdl:message>
+  <wsdl:portType name="IMainControl">
+    <wsdl:operation name="RegisterClient">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMainControl/RegisterClient" message="tns:IMainControl_RegisterClient_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMainControl/RegisterClientResponse" message="tns:IMainControl_RegisterClient_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Option1">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMainControl/Option1" message="tns:IMainControl_Option1_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMainControl/Option1Response" message="tns:IMainControl_Option1_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Option2">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMainControl/Option2" message="tns:IMainControl_Option2_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMainControl/Option2Response" message="tns:IMainControl_Option2_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Option3">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMainControl/Option3" message="tns:IMainControl_Option3_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMainControl/Option3Response" message="tns:IMainControl_Option3_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOnLineStatus">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMainControl/GetOnLineStatus" message="tns:IMainControl_GetOnLineStatus_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMainControl/GetOnLineStatusResponse" message="tns:IMainControl_GetOnLineStatus_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SendMessage">
+      <wsdl:output wsaw:Action="http://tempuri.org/IMainControl/SendMessage" message="tns:IMainControl_SendMessage_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SendMessages">
+      <wsdl:output wsaw:Action="http://tempuri.org/IMainControl/SendMessages" message="tns:IMainControl_SendMessages_OutputCallbackMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NetTcpBinding_IMainControl" type="tns:IMainControl">
+    <wsp:PolicyReference URI="#NetTcpBinding_IMainControl_policy" />
+    <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
+    <wsdl:operation name="RegisterClient">
+      <soap12:operation soapAction="http://tempuri.org/IMainControl/RegisterClient" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Option1">
+      <soap12:operation soapAction="http://tempuri.org/IMainControl/Option1" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Option2">
+      <soap12:operation soapAction="http://tempuri.org/IMainControl/Option2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Option3">
+      <soap12:operation soapAction="http://tempuri.org/IMainControl/Option3" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOnLineStatus">
+      <soap12:operation soapAction="http://tempuri.org/IMainControl/GetOnLineStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendMessage">
+      <soap12:operation soapAction="http://tempuri.org/IMainControl/SendMessage" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendMessages">
+      <soap12:operation soapAction="http://tempuri.org/IMainControl/SendMessages" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MainControl">
+    <wsdl:port name="NetTcpBinding_IMainControl" binding="tns:NetTcpBinding_IMainControl">
+      <soap12:address location="net.tcp://jacky-pc:8731/Design_Time_Addresses/ShowRoomSys.Service/Service1/" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>net.tcp://jacky-pc:8731/Design_Time_Addresses/ShowRoomSys.Service/Service1/</wsa10:Address>
+        <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
+          <Upn>user</Upn>
+        </Identity>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
