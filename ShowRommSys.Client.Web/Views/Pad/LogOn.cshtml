@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "LogOn";
+    Layout = "~/Views/Shared/PadMasterPage.cshtml";
+}
+@model ShowRommSys.Client.Web.Models.Users
+<div class="ipad2">
+    <div class="box">
+        <div class="top">
+            <div class="title one">演示控制</div>
+        </div>
+        <div class="content">
+            <div class="label"><h2>输入用户名和密码登录系统</h2></div>
+            <div class="section">
+                @using (Html.BeginForm())
+                {
+                    <ul>
+                        <li class="field"><label for="Number">用户名</label><p><input type="text" name="Number" id="Number" class="text" /></p></li>
+                        <li class="field"><label for="Password">密码</label><p><input type="password" name="Password" id="Password" class="text" /></p></li>
+                    </ul>
+                }
+            </div>
+            @if (ViewData["Error"] != null)
+            {
+                <div class="label"><p>@ViewData["Error"].ToString()</p></div>
+            }
+            <div class="button"><a href="javascript:;" id="btnLogin">登录</a></div> 
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $("#btnLogin").click(function(){$('form').submit();return false;});
+});
+</script>

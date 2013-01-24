@@ -1,0 +1,137 @@
+﻿@{
+    Layout = "~/Views/Shared/MasterPage.cshtml";
+}
+@model IEnumerable<ShowRommSys.Client.Web.Models.Items>
+@using Telerik.Web.Mvc.UI
+@using ShowRommSys.Client.Web.Models;
+<script>$.ajaxSetup({cache:false});</script>
+<script>
+    function DeletePlayItem(id, name) {
+        var url = '/Site/InitPlayResource/' + id + '/' + name;
+        $.getJSON(url, function (data) {
+            window.location.href = window.location.href;
+        });
+    }
+    function Delete(id) {
+        if (confirm("确实要删除选中记录吗？")) {
+            var ids
+            if (id != "")
+                ids = id;
+            else
+                ids = getValues();
+            if (ids == "") {
+                alert("请先选择要删除的记录！");
+            }
+            else {
+                $.ajax({
+                    url: "/Site/DeleteItems",
+                    type: "POST",
+                    data: "{'ID':'" + ids + "'}",
+                    cache: false,
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function () { window.location.href = window.location.href; },
+                    error: function () { alert("Delete Failed!") }
+                });
+            }
+        }
+    }
+    $(document).ready(function () {
+        $("#checkAll").click(function () {
+            $(".chk").attr("checked", $(this).attr("checked"));
+        });
+    });
+    function getValues() {
+        var temps = "";
+        $(".chk").each(function () {
+            if ($(this).attr("checked")) {
+                temps += $(this).val() + ",";
+            }
+        });
+        return temps;
+    }
+</script>
+<div class="box corner-top">
+    <div class="tools">
+        <div class="action">
+            <a id="multiVerify" onclick="javascript:Delete('');" class="btn-69">批量删除</a></div>
+    </div>
+    <div class="datas">
+        @(Html.Telerik().StyleSheetRegistrar()
+            .DefaultGroup(group => group
+                        .Add("telerik.common.css")
+                                        .Add("telerik.office2010silver.css")
+                        ))
+        @{
+            var pagerStyleFlags = new[] 
+    { 
+        new { Key = "pageInput", Value = GridPagerStyles.PageInput },
+        new { Key = "nextPrevious", Value = GridPagerStyles.NextPrevious },
+        new { Key = "numeric", Value = GridPagerStyles.Numeric }
+    };
+            GridPagerStyles pagerStyles = GridPagerStyles.NextPreviousAndNumeric;
+            foreach (var pagerStyleFlag in pagerStyleFlags)
+            {
+                bool pagerStyle = (bool)ViewData[pagerStyleFlag.Key];
+                if (pagerStyle == true)
+                {
+                    pagerStyles |= pagerStyleFlag.Value;
+                }
+                else
+                {
+                    pagerStyles &= ~pagerStyleFlag.Value;
+                }
+            }
+
+            Html.Telerik().Grid(Model)
+            .Name("Items")
+            .DataKeys(key => key.Add(k => k.Id))
+
+            .Columns(columns =>
+            {
+                columns.Template(
+            @<text>
+            <input class="chk" type="checkbox" value="@item.Id "/>
+            </text>)
+                                    .Title("<input type=\"checkbox\" id=\"checkAll\" />全选").Width(36).HtmlAttributes(new { style = "text-align:center" });
+                columns.Bound(k => k.Id).Title("编号");
+                columns.Bound(k => k.Name).Title("名称").Template(@<text><a id="" href='/site/EditItems/@item.Id'>@item.Name</a></text>);
+                @*columns.Template(@<text>
+            <div class="flex">
+                共
+                @{ var db = new ShowRoomSysEntities(); var playlist = db.ItemsResources.Where(e => e.ItemId == item.Id).Select(e => e.PlayName).Distinct().ToList(); }@playlist.Count
+                个 <a href="javascript:;" class="toggle">[显示]</a><a href="/site/AddPlayItems/@item.Id">[添加]</a>
+                <ul>
+                    @{
+                        for (int i = 0; i < playlist.Count; i++)
+                        {
+                            string id = "li" + i.ToString();
+                            string pname = playlist[i];
+                            int isid = db.ItemsResources.FirstOrDefault(e => e.ItemId == item.Id && e.PlayName == pname).Id;
+                        <li id="@id">@playlist[i]<a href="/site/EditPlayItems/@isid">[修改]</a><a href="javascript:DeletePlayItem('@item.Id','@playlist[i]');">[移除]</a></li>
+                        }
+                    }
+                </ul>
+            </div>
+            </text>).Title("播放方式");*@
+                columns.Bound(k => k.CreateTime).Title("时间");
+                columns.Template(@<text><a href='/site/EditItems/@item.Id'>编辑</a>&nbsp;&nbsp;<a href="javascript:Delete('@item.Id');">删除</a></text>).Title("操作");
+            })
+            .DataBinding(dataBinding =>
+            {
+                dataBinding.Server()
+                    .Select("IndexItems", "Site").Enabled(true);
+                //dataBinding.Ajax()
+                //            .Select("IndexItems", "Site").Enabled(true);
+            })
+                .Scrollable(scrolling => scrolling.Enabled(false))
+                .Sortable(sorting => sorting.Enabled(true))
+                .Pageable(paging => paging.PageSize(10).Style(pagerStyles).Position(GridPagerPosition.Both))
+                .Filterable(filtering => filtering.Enabled(true))
+                .Groupable(grouping => grouping.Enabled(false))
+                .Footer(true).Render();
+   
+        }
+        @Html.Telerik().ScriptRegistrar()
+    </div>
+</div>

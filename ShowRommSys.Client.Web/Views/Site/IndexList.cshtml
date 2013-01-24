@@ -1,0 +1,76 @@
+﻿@{
+    Layout = "~/Views/Shared/MasterPage.cshtml";
+}
+@model IEnumerable<ShowRommSys.Client.Web.Models.ShowItemsList>
+@using Telerik.Web.Mvc.UI
+<div class="box corner-top">
+    <div class="tools"></div>
+    <div class="datas">
+        @(Html.Telerik().StyleSheetRegistrar()
+            .DefaultGroup(group => group
+                        .Add("telerik.common.css")
+                                        .Add("telerik.office2010silver.css")
+                        ))
+        @{
+            var pagerStyleFlags = new[] 
+    { 
+        new { Key = "pageInput", Value = GridPagerStyles.PageInput },
+        new { Key = "nextPrevious", Value = GridPagerStyles.NextPrevious },
+        new { Key = "numeric", Value = GridPagerStyles.Numeric }
+    };
+            GridPagerStyles pagerStyles = GridPagerStyles.NextPreviousAndNumeric;
+            foreach (var pagerStyleFlag in pagerStyleFlags)
+            {
+                bool pagerStyle = (bool)ViewData[pagerStyleFlag.Key];
+                if (pagerStyle == true)
+                {
+                    pagerStyles |= pagerStyleFlag.Value;
+                }
+                else
+                {
+                    pagerStyles &= ~pagerStyleFlag.Value;
+                }
+            }
+
+            //@Html.ActionLink("添加新闻", "AddNew");
+            Html.Telerik().Grid(Model)
+            .Name("New")
+            .DataKeys(key => key.Add(k => k.Id))
+
+            .Columns(columns =>
+            {
+                columns.Bound(k => k.Code).Title("编号");
+                columns.Bound(k => k.Name).Title("名称").Template(@<text><a href='/News/NewEdit/@item.Id'>@item.Name</a></text>);
+                columns.Bound(k => k.CreateTime).Title("时间");
+                columns.Template(
+            @<text>
+            @{
+                if (item.Approve)
+                {
+                <font color="green">已通过</font>
+                }
+                else
+                {
+                <font color="red">未审核</font>
+                }
+            }
+            </text>).Title("状态");
+                columns.Template(@<text><a id='detail' href='/site/DetailsList/@item.Id'>详细</a></text>).Title("操作").Width(50);
+            })
+            .DataBinding(dataBinding =>
+            {
+                dataBinding.Server()
+                    .Select("IndexList", "Site").Enabled(true);
+            })
+                .Scrollable(scrolling => scrolling.Enabled(false))
+                .Sortable(sorting => sorting.Enabled(true))
+                .Pageable(paging => paging.PageSize(10).Style(pagerStyles).Position(GridPagerPosition.Both))
+                .Filterable(filtering => filtering.Enabled(true))
+                .Groupable(grouping => grouping.Enabled(false))
+                .Selectable()
+                .Footer(true).Render();
+   
+        }
+        @Html.Telerik().ScriptRegistrar()
+    </div>
+</div>

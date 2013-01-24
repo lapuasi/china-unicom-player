@@ -1,0 +1,23 @@
+﻿@model ShowRommSys.Client.Web.Models.Items
+@{
+    Layout = null;
+    ShowRommSys.Client.Web.Models.ShowRoomSysEntities DBContext = new ShowRommSys.Client.Web.Models.ShowRoomSysEntities();
+    var lists = DBContext.ItemsResources.Where(e => e.ItemId == Model.Id).ToList();
+}
+<div class="top">
+    <div class="title one right">@Model.Name</div>
+</div>
+<div class="label"><h2>共 @lists.Count 个媒体</h2></div>
+<div class="playlist">
+    <ul>
+        @foreach (var v in lists)
+        {
+            var resource = DBContext.Resources.FirstOrDefault(e => e.Id == v.ResourceId);
+            var device = DBContext.Resources.FirstOrDefault(e => e.Id == v.DeviceId);
+            <li>
+                <p class="subject"><span class="filetype filetype-ppt"></span><span class="filename">@resource.Name</span></p>
+                <p class="control"><a href="javascript:;" class="rw">RW</a><a href="javascript:;" class="ff">FF</a></p>
+            </li>
+        }
+    </ul>
+</div>

@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "AddNetures";
+    Layout = "~/Views/Shared/MasterPage.cshtml";
+}
+@model ShowRommSys.Client.Web.Models.Natures
+<div class="box corner-top">
+    @using (Html.BeginForm())
+    {
+        <div class="form">
+            <p>
+                <label class="field">
+                    预约日期：</label><input name="Date" id="Date" type="text" class="text readonly" size="20" value="@ViewData["date"]"
+                        readonly="readonly" /><span class="explain"><a href="/site/calendar/">[重新选择]</a></span></p>
+            <p>
+                <label class="field">
+                    预约时间：</label>@{
+        ShowRommSys.Client.Web.Models.ShowRoomSysEntities DBContext = new ShowRommSys.Client.Web.Models.ShowRoomSysEntities();
+        List<int> result = new List<string>(ViewData["date"].ToString().Split('-')).ConvertAll(i => int.Parse(i));
+        int year = result[0];
+        int mon = result[1];
+        int day = result[2];
+        int[] time = { 9, 10, 11, 14, 15, 16 };
+        var list = DBContext.Natures.Where(e => e.Date.Year == year && e.Date.Month == mon && e.Date.Day == day);
+        foreach (int i in time)
+        {
+            string str = "";
+            if (list.Where(e => e.Time == i).ToList().Count > 0)
+            {
+                str = "disabled='disabled'";
+            }
+                        <label class='checkbox'>
+                            <input type='radio' name='time' value='@i.ToString()' @str/>@i.ToString().PadLeft(2, '0')
+                            :00</label>;
+        }
+                    }
+            </p>
+            <p>
+                <label class="field">
+                    客户名称：</label><input name="Custmor" id="Custmor" type="text" class="text" size="70" /></p>
+            <p>
+                <label class="field">
+                    参观人数：</label><input name="CustmorCount" id="CustmorCount" type="text" class="text"
+                        size="70" /></p>
+            <p>
+                <label class="field">
+                    参观人员级别：</label><label class="checkbox"><input type="radio" name="CustmorLevel" id="CustmorLevel"
+                        value="5" />一号首长</label><label class="checkbox"><input type="radio" name="CustmorLevel"
+                            id="CustmorLevel" value="4" />副领导</label><label class="checkbox"><input type="radio"
+                                name="CustmorLevel" id="CustmorLevel" value="3" />部门领导</label><label class="checkbox"><input
+                                    type="radio" name="CustmorLevel" id="CustmorLevel" value="2" />相关主管</label><label
+                                        class="checkbox"><input type="radio" name="CustmorLevel" id="CustmorLevel" value="1" />其他</label></p>
+            <p>
+                <label class="field">
+                    联系人姓名：</label><input name="Contact" id="Contact" type="text" class="text" size="20" /></p>
+            <p>
+                <label class="field">
+                    联系人电话：</label><input name="Tel" id="Tel" type="text" class="text" size="20" maxlength="11" /></p>
+            <p>
+                <label class="field">
+                    陪同人员：</label><input name="Escort" id="Escort" type="text" class="text" size="70" /></p>
+            <p>
+                <label class="field">
+                    关注项目：</label><textarea name="Follow" id="Follow" class="text full" rows="5"></textarea></p>
+            <p>
+                <label class="field">
+                    备注：</label><textarea name="Remark" id="Remark" class="text full" rows="5"></textarea></p>
+            <p><button type="submit">提交</button>&nbsp;<a id="btnReturn" href="/site/calendar/" class="btn-69">返回</a></p>
+        </div>
+    }
+</div>

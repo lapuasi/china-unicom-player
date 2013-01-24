@@ -1,0 +1,22 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>山东联通演示管理系统</title>
+    <link type="text/css" rel="stylesheet" href="../../Images/style.css" />
+    <script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+</head>
+<div>
+    <frameset cols="250,*" border="0">
+	        <frame name="menu" id="menu" noresize="noresize" src="@Url.Content("~/Site/Menu/")"></frame>
+	        <frameset rows="64,*" border="0">
+		        <frame name="user" id="user" noresize="noresize" src="@Url.Content("~/Site/UserInfo/")" ></frame>
+		        <frame name="content" id="content" noresize="noresize" src="@Url.Content("~/Site/Welcome/")" ></frame>
+	        </frameset>
+
+        </frameset>
+</div>
+</html>

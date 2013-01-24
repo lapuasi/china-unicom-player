@@ -1,0 +1,112 @@
+﻿@{
+    ViewBag.Title = "PlayDetails";
+    Layout = "~/Views/Shared/PadMasterPage.cshtml";
+}
+<div class="ipad2 cols">
+    <div class="box cols-left">
+        <div class="top">
+            <div class="bar-left"><a href="/pad/PlayList/" class="btn-back"><span>返回</span></a></div>
+            <div class="title one left">展项</div>
+        </div>
+        <div class="menu">
+            <ul>
+                @{
+                    int id = int.Parse(ViewData["id"].ToString());
+                    ShowRommSys.Client.Web.Models.ShowRoomSysEntities DBContext = new ShowRommSys.Client.Web.Models.ShowRoomSysEntities();
+                    //var Natures = DBContext.NaturesItemsSet.Where(e => e.Id == id);
+                    var results =
+                    from ni in DBContext.NaturesItemsSet
+                    join l in DBContext.ShowItemsList on ni.ListId equals l.Id
+                    join i in DBContext.Items on ni.ItemId equals i.Id
+                    where ni.NaId == id
+                    select new
+                    {
+                        ListName = l.Name,
+                        ItemName = i.Name,
+                        ListId = l.Id,
+                        ItemId = i.Id,
+                    };
+                    var IDs = results.ToList().Select(e => e.ListId).Distinct();
+                    foreach (var v in IDs)
+                    {
+                    <li><a href="javascript:;" class="item"><span>@{string name = results.FirstOrDefault(e => e.ListId == v).ListName;}@name</span></a>
+                        <p class="location">
+                        @{
+                            var items = results.Where(e => e.ListId == v);
+                            foreach (var i in items)
+                            {
+                                <a href="javascript:ShowFileList('@i.ItemId','@i.ItemName');">@i.ItemName</a>
+                            }
+                        }
+                        </p>
+                    </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="box cols-right" id="divObj">
+        <div class="top"><div class="title one right">内容</div></div>
+        <div class="content"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $('.menu .location').each(function(idx){var a=$(this).find('a');if(a.length==1){$(this).parents('li').find('a.item').attr('href',a.attr('href')).append('<em>'+a.text()+'</em>');$(this).remove();}});
+        $('.menu a.item').click(function(){var li=$(this).parents('li');var p=li.children('.location');if(p.length>0){p.toggle();return false;}else{$('.menu li').removeClass('current');li.addClass('current');}return true;});
+        //$(".playlist .subject").click(function(){$(this).parents('li').toggleClass('current');}); //页面首次加载时右侧为空内容，这行代码就没用了，我注释了，回头直接移除就行了
+    });
+    function ShowFileList(id,name){
+        var url="/pad/PlayItems/"+id+"/"+name+"/";
+        $.getJSON(url, function(data){
+            $("#divObj").html(data);
+        }).complete(function(){
+            $('#divObj .playlist .subject').click(function(){$('#divObj .playlist li').removeClass('current');$(this).parents('li').addClass('current');}); //手动绑定新加载内容的伸缩事件
+            $('#divObj .playlist li:first').addClass('current'); //展开第一个资源
+
+            $('#divObj .button').hide(); //隐藏“继续播放”按钮，这个不要了，最好在代码输出时去掉，这段就可以省略
+            $('#divObj .playlist p[class!=subject]').addClass('control'); //手动绑定按钮父元素P的样式为control，最好在代码输出时加上，这段就可以省略
+            $('#divObj .playlist .control a').each(function(idx){
+                if($(this).text()=='开始'){$(this).addClass('play');} //开始按钮没有绑定演示，我这里手动绑定，最好代码输出时就写上，这段就可以省略
+                if($(this).text()=='全屏'){$(this).hide();} //隐藏“全屏”按钮，目前演示不用，我这里手动隐藏
+            });
+            $('#divObj .filetype-excel').removeClass('filetype-excel').addClass('filetype-xls'); //Excel文件图标样式名错了，我这里手动修改了，回头后台改下，这行就去掉
+            $('#divObj a[href*=".pdf"]').parents('li').find('.filetype').attr('class','filetype filetype-pdf'); //PDF文件图标样式名错了，我这里手动修改了，回头后台改下，这行就去掉
+            $('#divObj a[href*=".jpg"]').parents('li').find('.filetype').attr('class','filetype filetype-img'); //图片文件图标样式名错了，我这里手动修改了，回头后台改下，这行就去掉
+            $('#divObj a[href*="http://"]').parents('li').find('.filetype').attr('class','filetype filetype-url'); //网页地址图标样式名错了，我这里手动修改了，回头后台改下，这行就去掉
+            $('#divObj a[href*=".jpg"], #divObj a[href*="http://"]').parents('li').find('a.rw, a.ff').hide(); //网页和图片类资源不需要翻页，我这里手动隐藏了，回头后台改下，这行就去掉
+        });
+    }
+    function OptionPlay(type, deviceMac) {
+        $.ajax({
+            url: "/Site/OptionPlay/" + type + "/" + deviceMac + "/",
+            type: "POST",
+            data: "{'ID':'" + type + "'}",
+            cache: false,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                //if(data != "") alert(data);
+            },
+            error: function (err) {
+                //alert(err.responseText);
+            }
+        });
+    }
+    function StartPlay(deviceMac, fileName) {
+        $.ajax({
+            url: "/Site/StartPlay/", // + deviceMac + "/" + fileName + "/",
+            type: "POST",
+            data: "{'ID':'" + deviceMac + "','name':'" + fileName + "'}",
+            cache: false,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                //if(data != "") alert(data);
+            },
+            error: function (err) {
+                //alert(err.responseText);
+            }
+        });
+    }
+</script>

@@ -1,0 +1,15 @@
+﻿@{
+    Layout = "~/Views/Shared/MasterPage.cshtml";
+}
+@model ShowRommSys.Client.Web.Models.ShowItemsList
+<div class="box corner-top">
+    <div class="detail">
+        <p><label class="field">编号：</label>@Model.Code</p>
+        <p><label class="field">名称：</label>@Model.Name</p>
+        <p><label class="field">内容描述：</label>@Model.Description</p>
+        <p><label class="field">创建方法：</label>@Model.CreateMethod</p>
+        <p><label class="field">包含资源：</label>@ViewData["Resources"]</p>
+        <p><label class="field">创建时间：</label>@Model.CreateTime</p>
+        <p>@Html.ActionLink("返回", "Indexlist", "", new { @class = "btn-69" })</p>
+    </div>
+</div>

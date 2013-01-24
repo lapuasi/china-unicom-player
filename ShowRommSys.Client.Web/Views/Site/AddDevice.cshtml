@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "AddDevice";
+    Layout = "~/Views/Shared/MasterPage.cshtml";
+}
+@model ShowRommSys.Client.Web.Models.Device
+<div class="box corner-top">
+    @using (Html.BeginForm())
+    {
+        <div class="form">
+            <p><label class="field">设备名称：</label><input name="Name" id="Name" type="text" class="text" size="70" /></p>
+            <p><label class="field">MAC地址：</label><input name="Mac" id="Mac" type="text" class="text" size="30" maxlength="17" /></p>
+            <p><label class="field">备注：</label><textarea name="Remark" id="Remark" class="text full" rows="5"></textarea></p>
+            <p><button type="submit">确定</button></p>
+        </div>
+    }
+</div>
+<script type="text/javascript">
+$(function(){
+    $('input[name=Mac]').bind('keyup mouseup',function(){$(this).val($(this).val().replace(':','-'));});
+});
+</script>

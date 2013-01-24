@@ -1,0 +1,53 @@
+﻿@{
+    Layout = null;
+}
+@model ShowRommSys.Client.Web.Models.Items
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>DetailsItems</title>
+</head>
+<body>
+    <div>
+        @using (Html.BeginForm())
+        {
+            <fieldset>
+                <legend>添加清单</legend>
+                <table>
+                    
+                    <tr>
+                        <td>
+                            展项名称:
+                        </td>
+                        <td>
+                            <label id="Name" name="Name">@Model.Name
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            所属清单:
+                        </td>
+                        <td>
+                            <label id="ListId" name="ListId">
+                            @{
+            string s = new ShowRommSys.Client.Web.Models.ShowRoomSysEntities().ShowItemsList.ToList().Where(e => e.Id == Model.listId).Select(e => e.Name).FirstOrDefault();}
+            @s
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            内容:
+                        </td>
+                        <td>
+                        <label id="Content" name="Content">@Model.Content</label>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        }
+    </div>
+</body>
+</html>

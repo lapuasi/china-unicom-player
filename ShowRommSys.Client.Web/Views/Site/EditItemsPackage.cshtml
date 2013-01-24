@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "EditItemsPackage";
+    Layout = "~/Views/Shared/MasterPage.cshtml";
+}
+@model ShowRommSys.Client.Web.Models.ItemsPackage
+<script>
+$.ajaxSetup({cache:false});
+    var itemcount = 0;
+    function GetPlay() {
+        if ($("#ddl_Items").val() == "") {
+            return;
+        }
+        var defaultOP = "<option value='0'>-方式-</option>";
+        $("#ddl_Play").empty();
+        $("#ddl_Play").append(defaultOP);
+        var url = "/Site/GetPlay/" + $("#ddl_Items").val() + "/";
+        $.getJSON(url, function (data) {
+            $.each(data, function (i, item) {
+                $("<option>" + item["Name"] + "</option>")
+                .val(item["Id"])
+                .appendTo($("#ddl_Play"));
+            });
+        });
+    }
+    function AddResource() {
+        if ($("#ddl_Play").val() == "0") {
+            alert("请先选择方式");
+            return;
+        }
+        if ($("#ddl_Items").val() == "") {
+            alert("请先选择展项");
+            return;
+        } $("#ddl_Devices").find("option:selected").text()
+        InsertToDiv($("#ddl_Items").find("option:selected").text(), $("#ddl_Play").find("option:selected").text(), $("#ddl_Items").val(), $("#ddl_Play").val());
+    }
+    function InsertToDiv(listname, itemname, listid, itemid) {
+        var count = $("#listItem").children("p").length;
+        var id = "listItem" + (itemcount + 1);
+        var item = "<p id='" + id + "'> " + listname + "（" + itemname + "）&nbsp;<a href='javascript:RemoveResource(\"" + id + "\");'>[移除]</a><input type='hidden' name='itemid' value='" + itemid + "'/><input type='hidden' name='listid' value='" + listid + "'/></p>";
+        $("#listItem").append(item);
+        itemcount++;
+    }
+    function RemoveResource(id) {
+        $("#" + id + "").remove();
+    }
+    function InitPlayResource() {
+        var url = '/Site/InitPackage/@Model.Id';
+        $.getJSON(url, function (data) {
+            $.each(data, function (i, item) {
+                var results = item.split(",");
+                InsertToDiv(results[0], results[1], results[2], results[3]);
+            });
+        });
+    }
+</script>
+<div class="box corner-top">
+    @using (Html.BeginForm())
+    {
+        <div class="form">
+            <p><label class="field">体验包名称：</label><input name="Name" id="Name" type="text" class="text" size="50" value="@Model.Name"/></p>
+            <p><label class="field">备注：</label><textarea name="Remark" id="Remark" class="text full" rows="5">@Model.Remark</textarea></p>
+            <p><label class="field">包含展项：</label>
+                @Html.DropDownList("ddl_Items", (List<SelectListItem>)ViewData["Items"], "-展项-", new { onchange = "GetPlay()", @class = "small" })
+                &nbsp;<select name="ddl_Play" class="small" id="ddl_Play"><option value="0">-方式-</option></select>&nbsp;<a id="btnAdd" href="javascript:AddResource();" class="btn-69">添加</a></p>
+            <div id="listItem"></div>
+            <p><button type="submit">确定</button></p>
+        </div>
+    }
+    <script>InitPlayResource()</script>
+</div>

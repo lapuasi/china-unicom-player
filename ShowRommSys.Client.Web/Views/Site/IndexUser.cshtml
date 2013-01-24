@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = "IndexUsers";
+    Layout = "~/Views/Shared/MasterPage.cshtml";
+}
+@model IEnumerable<ShowRommSys.Client.Web.Models.Users>
+@using Telerik.Web.Mvc.UI
+<script>$.ajaxSetup({cache:false});</script>
+<script type="text/javascript" language="javascript">
+    function Delete(id) {
+        if (confirm("确实要删除选中记录吗？")) {
+            var ids
+            if (id != "")
+                ids = id;
+            else
+                ids = getValues();
+            if (ids == "") {
+                alert("请先选择要删除的记录！");
+            }
+            else {
+                $.ajax({
+                    url: "/Site/DeleteUser",
+                    type: "POST",
+                    data: "{'ID':'" + ids + "'}",
+                    cache: false,
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function () { window.location.href = window.location.href; },
+                    error: function () { alert("Delete Failed!") }
+                });
+            }
+        }
+    }
+    $(document).ready(function () {
+        $("#checkAll").click(function () {
+            $(".chk").attr("checked", $(this).attr("checked"));
+        });
+    });
+    function getValues() {
+        var temps = "";
+        $(".chk").each(function () {
+            if ($(this).attr("checked")) {
+                temps += $(this).val() + ",";
+            }
+        });
+        return temps;
+    }
+</script>
+<div class="box corner-top">
+    <div class="tools">
+        <div class="action">
+            <a id="multiVerify" onclick="javascript:Delete('');" class="btn-69">批量删除</a></div>
+    </div>
+    <div class="datas">
+        @(Html.Telerik().StyleSheetRegistrar()
+            .DefaultGroup(group => group
+                        .Add("telerik.common.css")
+                                        .Add("telerik.office2010silver.css")
+                        ))
+        @{
+            var pagerStyleFlags = new[] 
+    { 
+        new { Key = "pageInput", Value = GridPagerStyles.PageInput },
+        new { Key = "nextPrevious", Value = GridPagerStyles.NextPrevious },
+        new { Key = "numeric", Value = GridPagerStyles.Numeric }
+    };
+            GridPagerStyles pagerStyles = GridPagerStyles.NextPreviousAndNumeric;
+            foreach (var pagerStyleFlag in pagerStyleFlags)
+            {
+                bool pagerStyle = (bool)ViewData[pagerStyleFlag.Key];
+                if (pagerStyle == true)
+                {
+                    pagerStyles |= pagerStyleFlag.Value;
+                }
+                else
+                {
+                    pagerStyles &= ~pagerStyleFlag.Value;
+                }
+            }
+
+            Html.Telerik().Grid(Model)
+            .Name("User")
+            .DataKeys(key => key.Add(k => k.Id))
+
+            .Columns(columns =>
+            {
+                columns.Template(
+            @<text>
+            <input class="chk" type="checkbox" value="@item.Id "/>
+            </text>)
+                    .Title("<input type=\"checkbox\" id=\"checkAll\" />全选").Width(36).HtmlAttributes(new { style = "text-align:center" });
+                columns.Bound(k => k.Number).Title("工号");
+                columns.Bound(k => k.RoleId).Title("角色").Template(@<text>
+            @{ string str = new ShowRommSys.Client.Web.Models.ShowRoomSysEntities().Roles.FirstOrDefault(e => e.Id == item.RoleId).Name;}
+            @str </text>);
+                columns.Bound(k => k.Name).Title("姓名");
+                columns.Template(
+            @<text>
+            @item.Tel<br><em>@item.Email</em>
+            </text>).Title("联系方式").HtmlAttributes(new {@class="al"});
+                columns.Template(@<text><a href='/site/EditUser/@item.Id'>编辑</a>&nbsp;&nbsp;<a href="javascript:Delete('@item.Id');">删除</a></text>);
+            })
+            .DataBinding(dataBinding =>
+            {
+                dataBinding.Server().Select("IndexUser", "Site").Enabled(true);
+            })
+                .Scrollable(scrolling => scrolling.Enabled(false))
+                .Sortable(sorting => sorting.Enabled(true))
+                .Pageable(paging => paging.PageSize(10).Style(pagerStyles).Position(GridPagerPosition.Both))
+                .Filterable(filtering => filtering.Enabled(true))
+                .Groupable(grouping => grouping.Enabled(false))
+                .Selectable()
+                .Footer(true).Render();
+   
+        }
+        @Html.Telerik().ScriptRegistrar()
+    </div>
+</div>

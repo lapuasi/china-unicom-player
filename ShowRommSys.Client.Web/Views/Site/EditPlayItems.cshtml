@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "EditPlayItems";
+    Layout = "~/Views/Shared/MasterPage.cshtml";
+}
+@model ShowRommSys.Client.Web.Models.Items
+<script type="text/javascript" language="javascript">
+$.ajaxSetup({cache:false});
+    var itemcount = 0;
+   
+    function InitPlayResource() {
+        var url = '/Site/InitPlayResource/@Model.Id/@ViewData["PlayName"]';
+        $.getJSON(url, function (data) {
+            $.each(data, function (i, item) {
+                var results = item.split(",");
+                InsertToDiv(results[0], results[1], results[2], results[3]);
+            });
+        });
+    }
+    function GetResources() {
+        var defaultOP = "<option value='0'>-资源-</option>";
+        $("#ddl_Resource").empty();
+        $("#ddl_Resource").append(defaultOP);
+        if ($("#ddl_ResourceType").val() == "") {
+            return;
+        }
+        var url = "/Site/GetResources/" + $("#ddl_ResourceType").val() + "/";
+        $.getJSON(url, function (data) {
+            $.each(data, function (i, item) {
+                $("<option>" + item["Name"] + "</option>")
+                .val(item["Id"])
+                .appendTo($("#ddl_Resource"));
+            });
+        });
+    }
+    function AddResource() {
+        if ($("#ddl_Resource").val() == "0") {
+            alert("请先选择资源");
+            return;
+        }
+        if ($("#ddl_Devices").val() == "") {
+            alert("请先选择设备");
+            return;
+        } $("#ddl_Devices").find("option:selected").text()
+        InsertToDiv($("#ddl_Resource").find("option:selected").text(), $("#ddl_Devices").find("option:selected").text(), $("#ddl_Resource").val(), $("#ddl_Devices").val());
+    }
+    function InsertToDiv(resource, device, rid, did) {
+        var count = $("#listResource").children("p").length;
+        var id = "presource" + (itemcount + 1);
+        var item = "<p id='" + id + "'> " + (itemcount + 1) + "、" + resource + "（" + device + "）&nbsp;<a href='javascript:RemoveResource(\"" + id + "\");'>[移除]</a><input type='hidden' name='resourceid' value='" + rid + "'/><input type='hidden' name='diveceid' value='" + did + "'/></p>";
+        $("#listResource").append(item);
+        itemcount++;
+    }
+    function RemoveResource(id) {
+        $("#" + id + "").remove();
+    }
+</script>
+<div class="box corner-top">
+    @using (Html.BeginForm("AddItems", "Site"))
+    {
+	
+        <div class="form">
+            <p>
+                <label class="field">
+                    展项名称：</label><input type="hidden" value="@Model.Remark" id="Remark" name="Remark"/><input type="hidden" value="@Model.Name" id="Name" name="Name"/><input type="hidden" value="@Model.Id" id="Id" name="Id"/>
+                @Model.Name</p>
+            <div class="hr">
+                <p>
+                    <label class="field">
+                        播放名称：</label><input name="PlayName" id="PlayName" type="text" class="text" size="30" value='@ViewData["PlayName"].ToString()'/></p>
+                <p>
+                    <label class="field">
+                        播放资源：</label>
+                    @Html.DropDownList("ddl_ResourceType", (List<SelectListItem>)ViewData["ResourcesType"], "--类型--", new { onchange = "GetResources()", @class = "small" })
+                    &nbsp;<select name="ddl_Resource" id="ddl_Resource" class="small">
+                        <option value="0">-资源-</option>
+                    </select>&nbsp;
+                    @Html.DropDownList("ddl_Devices", (List<SelectListItem>)ViewData["Devices"], "--设备--", new { @class = "small" })
+                    &nbsp; <a id="btnAdd" href="javascript:AddResource();" class="btn-69">添加</a></p>
+                <div id="listResource">
+                </div>
+            </div>
+            <p>
+                <input id="btnSub" type="submit" value="确   定" class="btn-69" /></p>
+        </div>
+
+    }
+    <script>InitPlayResource()</script>
+</div>

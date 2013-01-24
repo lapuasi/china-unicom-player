@@ -1,0 +1,770 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ShowRoomSysModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="ShowRoomSysModelStoreContainer">
+    <EntitySet Name="ShowItemsList" EntityType="ShowRoomSysModel.Store.ShowItemsList" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Items" EntityType="ShowRoomSysModel.Store.Items" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ItemsPackage" EntityType="ShowRoomSysModel.Store.ItemsPackage" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Resources" EntityType="ShowRoomSysModel.Store.Resources" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ShowRoom" EntityType="ShowRoomSysModel.Store.ShowRoom" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Customer" EntityType="ShowRoomSysModel.Store.Customer" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CompanyNatures" EntityType="ShowRoomSysModel.Store.CompanyNatures" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Users" EntityType="ShowRoomSysModel.Store.Users" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Rights" EntityType="ShowRoomSysModel.Store.Rights" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UsersRights" EntityType="ShowRoomSysModel.Store.UsersRights" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MenuItem" EntityType="ShowRoomSysModel.Store.MenuItem" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Device" EntityType="ShowRoomSysModel.Store.Device" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ItemsResources" EntityType="ShowRoomSysModel.Store.ItemsResources" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ListResources" EntityType="ShowRoomSysModel.Store.ListResources" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PackageItems" EntityType="ShowRoomSysModel.Store.PackageItems" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Natures" EntityType="ShowRoomSysModel.Store.Natures" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="NaturesItemsSet" EntityType="ShowRoomSysModel.Store.NaturesItemsSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Roles" EntityType="ShowRoomSysModel.Store.Roles" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RolesRights" EntityType="ShowRoomSysModel.Store.RolesRights" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserLogSet" EntityType="ShowRoomSysModel.Store.UserLogSet" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="ShowItemsList">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CreateMethod" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Code" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="Approve" Type="bit" Nullable="false" DefaultValue="false" />
+  </EntityType>
+  <EntityType Name="Items">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Remark" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="ListId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ItemsPackage">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Remark" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Resources">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Type" Type="int" Nullable="false" />
+    <Property Name="Uri" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Category" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Approve" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="Remark" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ShowRoom">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="City" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Principal" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PrincipalTel" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PrincipalEmail" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Manager" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ManagerTel" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ManageEmail" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Picture" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="InterfaceUri" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="States" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Contact" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Tel" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Trade" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="NatureId" Type="int" Nullable="false" />
+    <Property Name="Grade" Type="int" Nullable="false" />
+    <Property Name="Business" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="OrderTime" Type="datetime" Nullable="true" />
+  </EntityType>
+  <EntityType Name="CompanyNatures">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nature" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Number" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Tel" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Email" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="RoleId" Type="int" Nullable="false" />
+    <Property Name="LastLoginTime" Type="datetime" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Rights">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Code" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UsersRights">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="RightId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MenuItem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PId" Type="int" Nullable="false" />
+    <Property Name="PName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Level" Type="int" Nullable="false" />
+    <Property Name="URL" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Index" Type="int" Nullable="false" />
+    <Property Name="Visible" Type="bit" Nullable="false" DefaultValue="true" />
+    <Property Name="IconStyle" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Device">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="MAC" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Remark" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Status" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="ItemsResources">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ItemId" Type="int" Nullable="false" />
+    <Property Name="ResourceId" Type="int" Nullable="false" />
+    <Property Name="DeviceId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ListResources">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ListID" Type="int" Nullable="false" />
+    <Property Name="ResourceID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PackageItems">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PackageId" Type="int" Nullable="false" />
+    <Property Name="ItemId" Type="int" Nullable="false" />
+    <Property Name="ListId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Natures">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="Time" Type="int" Nullable="false" />
+    <Property Name="Custmor" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Contact" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Tel" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Status" Type="nvarchar(max)" Nullable="false" DefaultValue="&quot;&quot;" />
+    <Property Name="Feedback" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="CustmorCount" Type="int" Nullable="false" DefaultValue="0" />
+    <Property Name="CustmorLevel" Type="nvarchar(max)" Nullable="false" DefaultValue="&quot;&quot;" />
+    <Property Name="Escort" Type="nvarchar(max)" Nullable="false" DefaultValue="&quot;&quot;" />
+    <Property Name="Follow" Type="nvarchar(max)" Nullable="true" DefaultValue="&quot;&quot;" />
+  </EntityType>
+  <EntityType Name="NaturesItemsSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ItemId" Type="int" Nullable="false" />
+    <Property Name="ListId" Type="int" Nullable="false" />
+    <Property Name="NaId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RolesRights">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RightId" Type="int" Nullable="false" />
+    <Property Name="RoleId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserLogSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="LoginTime" Type="datetime" Nullable="true" />
+  </EntityType>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ShowRoomSysModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="ShowRoomSysEntities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="ShowItemsList" EntityType="ShowRoomSysModel.ShowItemsList" />
+          <EntitySet Name="Items" EntityType="ShowRoomSysModel.Items" />
+          <EntitySet Name="ItemsPackage" EntityType="ShowRoomSysModel.ItemsPackage" />
+          <EntitySet Name="Resources" EntityType="ShowRoomSysModel.Resources" />
+          <EntitySet Name="ShowRoom" EntityType="ShowRoomSysModel.ShowRoom" />
+          <EntitySet Name="Customer" EntityType="ShowRoomSysModel.Customer" />
+          <EntitySet Name="CompanyNatures" EntityType="ShowRoomSysModel.CompanyNatures" />
+          <EntitySet Name="Users" EntityType="ShowRoomSysModel.Users" />
+          <EntitySet Name="Rights" EntityType="ShowRoomSysModel.Rights" />
+          <EntitySet Name="UsersRights" EntityType="ShowRoomSysModel.UsersRights" />
+          <EntitySet Name="MenuItem" EntityType="ShowRoomSysModel.MenuItems" />
+          <EntitySet Name="Device" EntityType="ShowRoomSysModel.Device" />
+          <EntitySet Name="ItemsResources" EntityType="ShowRoomSysModel.ItemsResources" />
+          <EntitySet Name="ListResources" EntityType="ShowRoomSysModel.ListResources" />
+          <EntitySet Name="PackageItems" EntityType="ShowRoomSysModel.PackageItems" />
+          <EntitySet Name="Natures" EntityType="ShowRoomSysModel.Natures" />
+          <EntitySet Name="NaturesItemsSet" EntityType="ShowRoomSysModel.NaturesItems" />
+          <EntitySet Name="Roles" EntityType="ShowRoomSysModel.Roles" />
+          <EntitySet Name="RolesRights" EntityType="ShowRoomSysModel.RolesRights" />
+          <EntitySet Name="UserLogSet" EntityType="ShowRoomSysModel.UserLog" />
+        </EntityContainer>
+        <EntityType Name="ShowItemsList">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" />
+          <Property Type="String" Name="CreateMethod" Nullable="false" />
+          <Property Type="String" Name="Code" Nullable="false" />
+          <Property Type="DateTime" Name="CreateTime" Nullable="false" />
+          <Property Type="Boolean" Name="Approve" Nullable="false" DefaultValue="False" />
+        </EntityType>
+        <EntityType Name="Items">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="String" Name="Remark" Nullable="false" />
+          <Property Type="DateTime" Name="CreateTime" Nullable="false" />
+          <Property Type="Int32" Name="ListId" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ItemsPackage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="String" Name="Remark" Nullable="false" />
+          <Property Type="DateTime" Name="CreateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Resources">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="Type" Nullable="false" />
+          <Property Type="String" Name="Uri" Nullable="false" />
+          <Property Type="String" Name="Category" />
+          <Property Type="Boolean" Name="Approve" Nullable="false" DefaultValue="false" />
+          <Property Type="String" Name="Remark" Nullable="false" />
+          <Property Type="DateTime" Name="CreateTime" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ShowRoom">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="String" Name="City" Nullable="false" />
+          <Property Type="String" Name="Address" Nullable="false" />
+          <Property Type="String" Name="Principal" Nullable="false" />
+          <Property Type="String" Name="PrincipalTel" Nullable="false" />
+          <Property Type="String" Name="PrincipalEmail" Nullable="false" />
+          <Property Type="String" Name="Manager" Nullable="false" />
+          <Property Type="String" Name="ManagerTel" Nullable="false" />
+          <Property Type="String" Name="ManageEmail" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" />
+          <Property Type="String" Name="Picture" Nullable="false" />
+          <Property Type="String" Name="InterfaceUri" Nullable="false" />
+          <Property Type="String" Name="States" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="String" Name="Address" Nullable="false" />
+          <Property Type="String" Name="Contact" Nullable="false" />
+          <Property Type="String" Name="Tel" Nullable="false" />
+          <Property Type="String" Name="Trade" Nullable="false" />
+          <Property Type="Int32" Name="NatureId" Nullable="false" />
+          <Property Type="Int32" Name="Grade" Nullable="false" />
+          <Property Type="String" Name="Business" Nullable="false" />
+          <Property Type="DateTime" Name="OrderTime" />
+        </EntityType>
+        <EntityType Name="CompanyNatures">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Nature" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="String" Name="Password" Nullable="false" />
+          <Property Type="String" Name="Number" Nullable="false" />
+          <Property Type="String" Name="Tel" Nullable="true" />
+          <Property Type="String" Name="Email" Nullable="true" />
+          <Property Type="String" Name="Remark" Nullable="true" />
+          <Property Type="Int32" Name="RoleId" Nullable="false" />
+          <Property Type="DateTime" Name="LastLoginTime" Nullable="true" />
+        </EntityType>
+        <EntityType Name="Rights">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="String" Name="Code" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UsersRights">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="Int32" Name="RightId" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MenuItems">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+          <Property Name="Name" Nullable="false" Type="String" />
+          <Property Name="PId" Nullable="false" Type="Int32" />
+          <Property Name="PName" Type="String" Nullable="false" />
+          <Property Name="Level" Nullable="false" Type="Int32" />
+          <Property Name="URL" Nullable="false" Type="String" />
+          <Property Name="Index" Nullable="false" Type="Int32" />
+          <Property Name="Visible" Nullable="false" DefaultValue="true" Type="Boolean" />
+          <Property Type="String" Name="IconStyle" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Device">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="String" Name="MAC" Nullable="false" />
+          <Property Type="String" Name="Remark" Nullable="false" />
+          <Property Type="String" Name="Status" Nullable="true" />
+        </EntityType>
+        <EntityType Name="ItemsResources">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="ItemId" Nullable="false" />
+          <Property Type="Int32" Name="ResourceId" Nullable="false" />
+          <Property Type="Int32" Name="DeviceId" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ListResources">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="ListID" Nullable="false" />
+          <Property Type="Int32" Name="ResourceID" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PackageItems">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="PackageId" Nullable="false" />
+          <Property Type="Int32" Name="ItemId" Nullable="false" />
+          <Property Type="Int32" Name="ListId" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Natures">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="Date" Nullable="false" />
+          <Property Type="Int32" Name="Time" Nullable="false" />
+          <Property Type="String" Name="Custmor" Nullable="true" />
+          <Property Type="String" Name="Contact" Nullable="true" />
+          <Property Type="String" Name="Tel" Nullable="true" />
+          <Property Type="String" Name="Remark" Nullable="true" />
+          <Property Type="String" Name="Status" Nullable="false" DefaultValue="&quot;&quot;" />
+          <Property Type="String" Name="Feedback" Nullable="true" />
+          <Property Type="Int32" Name="CustmorCount" Nullable="false" DefaultValue="0" />
+          <Property Type="String" Name="CustmorLevel" Nullable="false" DefaultValue="&quot;&quot;" />
+          <Property Type="String" Name="Escort" Nullable="false" DefaultValue="&quot;&quot;" />
+          <Property Type="String" Name="Follow" DefaultValue="&quot;&quot;" />
+        </EntityType>
+        <EntityType Name="NaturesItems">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="ItemId" Nullable="false" />
+          <Property Type="Int32" Name="ListId" Nullable="false" />
+          <Property Type="Int32" Name="NaId" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RolesRights">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="RightId" Nullable="false" />
+          <Property Type="Int32" Name="RoleId" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="DateTime" Name="LoginTime" Nullable="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ShowRoomSysModelStoreContainer" CdmEntityContainer="ShowRoomSysEntities">
+    <EntitySetMapping Name="ShowItemsList">
+      <EntityTypeMapping TypeName="IsTypeOf(ShowRoomSysModel.ShowItemsList)">
+        <MappingFragment StoreEntitySet="ShowItemsList">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="CreateMethod" ColumnName="CreateMethod" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="Approve" ColumnName="Approve" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Items">
+      <EntityTypeMapping TypeName="IsTypeOf(ShowRoomSysModel.Items)">
+        <MappingFragment StoreEntitySet="Items">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="ListId" ColumnName="ListId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ItemsPackage">
+      <EntityTypeMapping TypeName="IsTypeOf(ShowRoomSysModel.ItemsPackage)">
+        <MappingFragment StoreEntitySet="ItemsPackage">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Resources">
+      <EntityTypeMapping TypeName="IsTypeOf(ShowRoomSysModel.Resources)">
+        <MappingFragment StoreEntitySet="Resources">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Uri" ColumnName="Uri" />
+          <ScalarProperty Name="Category" ColumnName="Category" />
+          <ScalarProperty Name="Approve" ColumnName="Approve" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ShowRoom">
+      <EntityTypeMapping TypeName="IsTypeOf(ShowRoomSysModel.ShowRoom)">
+        <MappingFragment StoreEntitySet="ShowRoom">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Principal" ColumnName="Principal" />
+          <ScalarProperty Name="PrincipalTel" ColumnName="PrincipalTel" />
+          <ScalarProperty Name="PrincipalEmail" ColumnName="PrincipalEmail" />
+          <ScalarProperty Name="Manager" ColumnName="Manager" />
+          <ScalarProperty Name="ManagerTel" ColumnName="ManagerTel" />
+          <ScalarProperty Name="ManageEmail" ColumnName="ManageEmail" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Picture" ColumnName="Picture" />
+          <ScalarProperty Name="InterfaceUri" ColumnName="InterfaceUri" />
+          <ScalarProperty Name="States" ColumnName="States" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Customer">
+      <EntityTypeMapping TypeName="IsTypeOf(ShowRoomSysModel.Customer)">
+        <MappingFragment StoreEntitySet="Customer">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="Tel" ColumnName="Tel" />
+          <ScalarProperty Name="Trade" ColumnName="Trade" />
+          <ScalarProperty Name="NatureId" ColumnName="NatureId" />
+          <ScalarProperty Name="Grade" ColumnName="Grade" />
+          <ScalarProperty Name="Business" ColumnName="Business" />
+          <ScalarProperty Name="OrderTime" ColumnName="OrderTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CompanyNatures">
+      <EntityTypeMapping TypeName="IsTypeOf(ShowRoomSysModel.CompanyNatures)">
+        <MappingFragment StoreEntitySet="CompanyNatures">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nature" ColumnName="Nature" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="IsTypeOf(ShowRoomSysModel.Users)">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
+          <ScalarProperty Name="Tel" ColumnName="Tel" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="LastLoginTime" ColumnName="LastLoginTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Rights">
+      <EntityTypeMapping TypeName="IsTypeOf(ShowRoomSysModel.Rights)">
+        <MappingFragment StoreEntitySet="Rights">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UsersRights">
+      <EntityTypeMapping TypeName="IsTypeOf(ShowRoomSysModel.UsersRights)">
+        <MappingFragment StoreEntitySet="UsersRights">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="RightId" ColumnName="RightId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MenuItem">
+      <EntityTypeMapping TypeName="IsTypeOf(ShowRoomSysModel.MenuItems)">
+        <MappingFragment StoreEntitySet="MenuItem">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="PId" ColumnName="PId" />
+          <ScalarProperty Name="PName" ColumnName="PName" />
+          <ScalarProperty Name="Level" ColumnName="Level" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+          <ScalarProperty Name="Index" ColumnName="Index" />
+          <ScalarProperty Name="Visible" ColumnName="Visible" />
+          <ScalarProperty Name="IconStyle" ColumnName="IconStyle" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Device">
+      <EntityTypeMapping TypeName="IsTypeOf(ShowRoomSysModel.Device)">
+        <MappingFragment StoreEntitySet="Device">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="MAC" ColumnName="MAC" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ItemsResources">
+      <EntityTypeMapping TypeName="IsTypeOf(ShowRoomSysModel.ItemsResources)">
+        <MappingFragment StoreEntitySet="ItemsResources">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+          <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+          <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ListResources">
+      <EntityTypeMapping TypeName="IsTypeOf(ShowRoomSysModel.ListResources)">
+        <MappingFragment StoreEntitySet="ListResources">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ListID" ColumnName="ListID" />
+          <ScalarProperty Name="ResourceID" ColumnName="ResourceID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PackageItems">
+      <EntityTypeMapping TypeName="IsTypeOf(ShowRoomSysModel.PackageItems)">
+        <MappingFragment StoreEntitySet="PackageItems">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="PackageId" ColumnName="PackageId" />
+          <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+          <ScalarProperty Name="ListId" ColumnName="ListId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Natures">
+      <EntityTypeMapping TypeName="IsTypeOf(ShowRoomSysModel.Natures)">
+        <MappingFragment StoreEntitySet="Natures">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+          <ScalarProperty Name="Custmor" ColumnName="Custmor" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="Tel" ColumnName="Tel" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Feedback" ColumnName="Feedback" />
+          <ScalarProperty Name="CustmorCount" ColumnName="CustmorCount" />
+          <ScalarProperty Name="CustmorLevel" ColumnName="CustmorLevel" />
+          <ScalarProperty Name="Escort" ColumnName="Escort" />
+          <ScalarProperty Name="Follow" ColumnName="Follow" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NaturesItemsSet">
+      <EntityTypeMapping TypeName="IsTypeOf(ShowRoomSysModel.NaturesItems)">
+        <MappingFragment StoreEntitySet="NaturesItemsSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+          <ScalarProperty Name="ListId" ColumnName="ListId" />
+          <ScalarProperty Name="NaId" ColumnName="NaId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Roles">
+      <EntityTypeMapping TypeName="IsTypeOf(ShowRoomSysModel.Roles)">
+        <MappingFragment StoreEntitySet="Roles">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RolesRights">
+      <EntityTypeMapping TypeName="IsTypeOf(ShowRoomSysModel.RolesRights)">
+        <MappingFragment StoreEntitySet="RolesRights">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="RightId" ColumnName="RightId" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserLogSet">
+      <EntityTypeMapping TypeName="IsTypeOf(ShowRoomSysModel.UserLog)">
+        <MappingFragment StoreEntitySet="UserLogSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="LoginTime" ColumnName="LoginTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="ShowRoomSysDBModel" >
+        <EntityTypeShape EntityType="ShowRoomSysModel.ShowItemsList" Width="1.5" PointX="7.75" PointY="0.75" Height="2.3648893229166665" />
+        <EntityTypeShape EntityType="ShowRoomSysModel.Items" Width="1.5" PointX="2.25" PointY="0.5" Height="1.9802864583333331" />
+        <EntityTypeShape EntityType="ShowRoomSysModel.ItemsPackage" Width="1.5" PointX="4.125" PointY="0.75" Height="1.787985026041667" />
+        <EntityTypeShape EntityType="ShowRoomSysModel.Resources" Width="1.5" PointX="5.875" PointY="0.75" Height="2.5571907552083331" />
+        <EntityTypeShape EntityType="ShowRoomSysModel.ShowRoom" Width="1.5" PointX="0.5" PointY="0.625" Height="3.7109993489583326" />
+        <EntityTypeShape EntityType="ShowRoomSysModel.Customer" Width="1.5" PointX="11.25" PointY="2.875" Height="2.9417936197916656" />
+        <EntityTypeShape EntityType="ShowRoomSysModel.CompanyNatures" Width="1.5" PointX="9.5" PointY="0.75" Height="1.4033821614583326" />
+        <EntityTypeShape EntityType="ShowRoomSysModel.Users" Width="1.5" PointX="7.875" PointY="3.125" Height="2.7494921874999996" />
+        <EntityTypeShape EntityType="ShowRoomSysModel.Rights" Width="1.5" PointX="9.5" PointY="2.25" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="ShowRoomSysModel.UsersRights" Width="1.5" PointX="6" PointY="3.5" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="ShowRoomSysModel.MenuItems" PointX="0.5" PointY="4.75" Width="1.5" Height="2.7494921874999996" />
+        <EntityTypeShape EntityType="ShowRoomSysModel.Device" Width="1.5" PointX="11.25" PointY="0.75" Height="1.9802864583333331" />
+        <EntityTypeShape EntityType="ShowRoomSysModel.ItemsResources" Width="1.5" PointX="2.25" PointY="2.625" Height="1.7879850260416665" />
+        <EntityTypeShape EntityType="ShowRoomSysModel.ListResources" Width="1.5" PointX="2.25" PointY="4.75" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="ShowRoomSysModel.PackageItems" Width="1.5" PointX="4" PointY="2.875" Height="1.7879850260416665" />
+        <EntityTypeShape EntityType="ShowRoomSysModel.Natures" Width="1.5" PointX="4.125" PointY="4.875" Height="3.5186979166666656" />
+        <EntityTypeShape EntityType="ShowRoomSysModel.NaturesItems" Width="1.5" PointX="6" PointY="5.25" Height="1.7879850260416665" />
+        <EntityTypeShape EntityType="ShowRoomSysModel.Roles" Width="1.5" PointX="11.25" PointY="5.875" Height="1.4033821614583326" />
+        <EntityTypeShape EntityType="ShowRoomSysModel.RolesRights" Width="1.5" PointX="9.5" PointY="4" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="ShowRoomSysModel.UserLog" Width="1.5" PointX="12.875" PointY="1" Height="1.59568359375" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

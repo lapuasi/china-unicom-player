@@ -1,0 +1,188 @@
+﻿@{
+    ViewBag.Title = "Calendar";
+    Layout = null;
+}
+@model IEnumerable<ShowRommSys.Client.Web.Models.Natures>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>山东联通演示管理系统</title>
+    <script src="../../js/jquery-1.8.3.min.js" type="text/javascript"></script>
+    <script src="../../js/common.js" type="text/javascript"></script>
+    <script>$.ajaxSetup({cache:false});</script>
+    <link href="../../Images/style.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+
+    </script>
+</head>
+<body class="content">
+    @{ 
+        var now = ViewData["date"] == null ? DateTime.Now : Convert.ToDateTime(ViewData["date"]);
+        int ii = 0;
+        int month = now.Month;
+        int year = now.Year;
+        int daynow = DateTime.Now.Day;
+        int lastyear = year;
+        int lastmonth = month-1;
+        int nextyear = year;
+        int nextmonth = month+1;
+        if(lastmonth==0)
+        {
+            lastmonth=12;
+            lastyear--;
+        }
+        if(nextmonth>12)
+        {
+            nextmonth=1;
+            nextyear++;
+        }
+        <div class="box corner-top">
+            <div class="calendar">
+                <table>
+                    <thead>
+                        <tr>
+                            <td colspan="7" class="nav">
+                                <a href="/site/calendar/@lastyear-@lastmonth-1">&lt;&lt;上一月</a><strong>@year 年 @month 月</strong><a
+                                    href="/site/calendar/@nextyear-@nextmonth-1">下一月&gt;&gt;</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                星期一
+                            </th>
+                            <th>
+                                星期二
+                            </th>
+                            <th>
+                                星期三
+                            </th>
+                            <th>
+                                星期四
+                            </th>
+                            <th>
+                                星期五
+                            </th>
+                            <th>
+                                星期六
+                            </th>
+                            <th class="sun">
+                                星期日
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            //基姆拉尔森计算公式
+
+                            if (month == 1 || month == 2)
+                            {
+                                year--;
+                                if (month == 1)
+                                {
+                                    month = 13;
+                                }
+                                if (month == 2)
+                                {
+                                    month = 14;
+                                }
+                            }
+                            int week = (1 + 2 * month + 3 * (month + 1) / 5 + year + year / 4 - year / 100 + year / 400) % 7;
+                            //获得当月有多少天
+                            int idate = DateTime.DaysInMonth(year+1, (month - 1) % 12 + 1);
+                        }
+                        @{
+                            var day = 0 - week;
+                            for (int j = 0; j < (week + idate + 7) / 7; j++)
+                            {
+
+                                var time = 0;
+                            <tr>
+                                @{
+                                if (day < 0)
+                                {
+                                    //补齐前面的空余位置
+                                    for (var m = 0; m < week; m++)
+                                    {
+                                    <td valign="top" class="empty">
+                                    </td>
+                                        day++;
+                                        time++;
+                                    }
+                                }
+
+                                for (int k = 1; k <= 7; k++)
+                                {
+
+                                    time++;
+                                    day++;
+                                    if (day > idate)
+                                    {
+                                    <td valign="top" class="empty">
+                                    </td>
+                                    }
+                                    else
+                                    {
+                                        int m = month;
+                                        int y = year;
+                                        if (month > 12)
+                                        {
+                                            m = month - 12;
+                                            y = year + 1;
+                                        }
+                                        DateTime dt = new DateTime(y, m, day);
+                                        var result = Model.Where(a => a.Date == dt).ToList();
+                                    <td>
+                                        <a href='/site/AddNatures/@dt.ToString("yyyy-MM-dd")' class="day">@day</a>
+                                        @{ 
+                                        if (result.Count > 0)
+                                        {
+
+                                            foreach (var temp in result)
+                                            {
+                                                string style = "order pass";
+                                                if (day > daynow)
+                                                {
+                                                    style = "order wait";
+                                                }
+                                                if (temp.Status == "取消")
+                                                {
+                                                    style = "order cancel";
+                                                }
+                                                if (temp.Status == "完成")
+                                                {
+                                                    style = "order finish";
+                                                }
+                                            <a href="/site/DetailNatures/@temp.Id" class="@style">@temp.Time.ToString().PadLeft(2, '0'):00
+                                                @temp.Custmor</a>
+                                                ii++;
+                                            }
+
+                                        }
+                                        }
+                                    </td>
+
+                                    }
+                                    if (time == 7)
+                                    {
+                                        break;
+                                    }
+                                } 
+                                }
+                            </tr>
+                            }
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        month += 1;
+        if (month > 12)
+        {
+            month -= 12;
+            year += 1;
+        }
+        <input type="hidden" id="num" value="@ii" />
+    }
+</body>
+</html>

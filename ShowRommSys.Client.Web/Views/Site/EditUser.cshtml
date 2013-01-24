@@ -1,0 +1,32 @@
+﻿@{
+    Layout = "~/Views/Shared/MasterPage.cshtml";
+}
+@model ShowRommSys.Client.Web.Models.Users
+@using (Html.BeginForm())
+{
+<div class="box corner-top">
+    <div class="form">
+        <p><label class="field">工号：</label><input name="Number" id="Number" type="text" class="text" size="20" value="@Model.Number" /></p>
+        <p><label class="field">密码：</label><input name="Password" id="Password" type="password" class="text" size="20" /><span class="explain">若不修改请留空</span></p>
+        <p><label class="field">角色：</label>
+            @foreach (var v in new ShowRommSys.Client.Web.Models.ShowRoomSysEntities().Roles)
+            {
+                if (v.Id == Model.RoleId)
+                {
+                <label class="checkbox"><input type="radio" name="RoleId" id="RoleId" value="@v.Id" checked="checked" />@v.Name</label>
+                }
+                else
+                { 
+                <label class="checkbox"><input type="radio" name="RoleId" id="RoleId" value="@v.Id" />@v.Name</label>
+                }
+            }
+        <div class="hr">
+            <p><label class="field">姓名：</label><input name="Name" id="Name" type="text" class="text" size="20" value="@Model.Name" /></p>
+            <p><label class="field">电话：</label><input name="Tel" id="Tel" type="text" class="text" size="20" maxlength="11"value="@Model.Tel" /></p>
+            <p><label class="field">邮件：</label><input name="Email" id="Email" type="text" class="text" size="50" value="@Model.Email" /></p>
+            <p><label class="field">备注：</label><textarea name="Remark" id="Remark" class="text full" rows="5">@Model.Remark</textarea></p>
+        </div>
+        <p><button type="submit">确定</button></p>
+    </div>
+</div>
+}

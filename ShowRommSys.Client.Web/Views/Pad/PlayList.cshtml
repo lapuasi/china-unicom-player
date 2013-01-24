@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "PlayList";
+    Layout = "~/Views/Shared/PadMasterPage.cshtml";
+}
+@model IEnumerable<ShowRommSys.Client.Web.Models.Natures>
+@{
+    string name = "";
+    string number = "";
+
+    var db = new ShowRommSys.Client.Web.Models.ShowRoomSysEntities();
+    int id = int.Parse(Context.User.Identity.Name);
+    var user = db.Users.FirstOrDefault(e => e.Id == id);
+    name = user.Name;
+    number = user.Number;
+    var obj = db.UserLogSet.Where(e => e.UserId == id).ToList();
+    DateTime? dt;
+    if (obj.Count > 0)
+    {
+        dt = obj == null ? obj.Last().LoginTime.Value : DateTime.Now;
+    }
+}
+<div class="ipad2">
+    <div class="box">
+        <div class="top">
+            <div class="title one">演示控制</div>
+        </div>
+        <div class="content">
+            <div class="section">
+                <ul>
+                    <li class="field">
+                        <label>账户</label><p>@name（@number）</p>
+                        <p class="tool"><a href="javascript:LogOut()" class="btn-red" id="btnExit"><span>退出</span></a></p>
+                    </li>
+                </ul>
+            </div>
+            <div class="button"><a href="2.html" class="button" id="btnTemp">无预约讲解</a></div>
+            <div class="label"><h2>今日预约（@DateTime.Now.ToString("yyyy年MM月dd日")）</h2></div>
+            <div class="section">
+                <ul>
+                @{
+                    if (Model.Count() > 0)
+                    {
+                        foreach (var n in Model)
+                        {
+                            <li><a href="/pad/playDetails/@n.Id" class="list"><span><em>@n.Time.ToString().PadLeft(2, '0'):00</em>@n.Custmor</span></a></li>
+                        }
+                    } else {
+                        <li>无预约</li>
+                    }
+                }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$.ajaxSetup({cache:false});
+function LogOut() {
+    $.ajax({
+        url: "/Account/LogOff",
+        type: "POST",
+        data: "{'ID':'1'}",
+        cache: false,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function () {
+            window.parent.parent.location.href = "/pad/logon/";
+        }
+    });
+}
+</script>

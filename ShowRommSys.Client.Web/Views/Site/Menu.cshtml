@@ -1,0 +1,41 @@
+﻿@{
+    Layout = null;
+}
+@model List<ShowRommSys.Client.Web.Common.MenuItem>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>山东联通演示管理系统</title>
+    <link href="../../Images/style.css" rel="stylesheet" type="text/css" />
+    <script src="../../js/jquery-1.8.3.min.js" type="text/javascript"></script>
+    <script src="../../js/common.js" type="text/javascript"></script>
+</head>
+<body class="menu">
+    <div class="box corner-top">
+        <div class="title">
+            <h2 class="type-arrow">
+                功能菜单</h2>
+        </div>
+        <div class="list">
+            @if (Model != null && Model.Count != 0)
+            {
+
+                foreach (var menu in Model)
+                {
+                <div class="group">
+                    <p>
+                        <strong>@menu.menuname</strong></p>
+                    <ul>
+                        @foreach (var sub in menu.menus)
+                        {
+                            <li><a href="/site/@sub.url" target="content">@sub.menuname</a></li>
+                        }
+                    </ul>
+                </div>
+                }
+
+            }
+        </div>
+    </div>
+</body>
+</html>

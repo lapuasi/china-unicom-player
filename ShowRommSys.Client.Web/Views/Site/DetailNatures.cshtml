@@ -1,0 +1,139 @@
+﻿@{
+    ViewBag.Title = "DetailNatures";
+    Layout = "~/Views/Shared/MasterPage.cshtml";
+}
+@model ShowRommSys.Client.Web.Models.Natures
+<script type="text/javascript">
+    $.ajaxSetup({cache:false});
+    var itemcount = 0;
+    function GetDate() {
+        var defaultOP = "<option value='0'>-展项-</option>";
+        $("#selpackage").empty();
+        $("#selpackage").append(defaultOP);
+        if ($("#seltype").val() == "0") {
+            return;
+        }
+        var url
+        if ($("#seltype").val() == "2") {
+            url = "/Site/GetItems/";
+        }
+        else {
+            url = "/Site/GetItemsPackages/"
+        }
+        $.getJSON(url, function (data) {
+            $.each(data, function (i, item) {
+                $("<option>" + item["Name"] + "</option>")
+                .val(item["Id"])
+                .appendTo($("#selpackage"));
+            });
+        });
+    }
+    function GetPlayItems() {
+        var defaultOP = "<option value='0'>-方案-</option>";
+        $("#selitem").empty();
+        $("#selitem").append(defaultOP);
+        if ($("#selpackage").val() == "0") {
+            return;
+        }
+        var url = "/Site/GetPlayItems/" + $("#selpackage").val() + "/" + $("#seltype").val() + "/";
+        $.getJSON(url, function (data) {
+            $.each(data, function (i, item) {
+                $("<option>" + item["Name"] + "</option>")
+                .val(item["Id"])
+                .appendTo($("#selitem"));
+            });
+        });
+    }
+    function AddResource() {
+        if ($("#selpackage").val() == "0") {
+            alert("请先选择展项");
+            return;
+        }
+        if ($("#selitem").val() == "0") {
+            alert("请先选择方式");
+            return;
+        }
+        if ($("#seltype").val() == "2") {
+            InsertToDiv($("#selpackage").find("option:selected").text(), $("#selitem").find("option:selected").text(), $("#selpackage").val(), $("#selitem").val());
+        }
+        if ($("#seltype").val() == "1") {
+            var url = "/Site/GetListItems/" + $("#selitem").val() + "/";
+            $.getJSON(url, function (data) {
+                $.each(data, function (i, item) {
+                    InsertToDiv($("#selitem").find("option:selected").text(), item["Name"], $("#selitem").val(), item["Id"]);
+                });
+            });
+        }
+    }
+    function InsertToDiv(list, item, listid, itemid) {
+        var id = "presource" + (itemcount + 1);
+        var item = "<p id='" + id + "'> " + list + "（" + item + "）&nbsp;<a href='javascript:RemoveResource(\"" + id + "\");'>[移除]</a><input type='hidden' name='resourceid' value='" + listid + "'/><input type='hidden' name='playname' value='" + itemid + "'/></p>";
+        $("#listItem").append(item);
+        itemcount++;
+    }
+    function RemoveResource(id) {
+        $("#" + id + "").remove();
+    }
+    function UpdateStatus(id,status) {
+        var url = "/Site/UpdateStatus/" + id + "/" + status + "/";
+        $.getJSON(url, function (data) {
+            window.location.href = "/site/Calendar";
+        })
+    }
+
+    function Delete() {
+        if (confirm("确定删除预约吗？")) {
+            var url = "/Site/DeleteNature/@Model.Id/";
+            $.getJSON(url, function (data) {
+                window.location.href = "/site/Calendar";
+            });
+        }
+    }
+    function InitPlayResource() {
+        var url = '/Site/InitNaturesPackage/@Model.Id/';
+        $.getJSON(url, function (data) {
+            $.each(data, function (i, item) {
+                var results = item.split(",");
+                InsertToDiv(results[0], results[1], results[2], results[3]);
+            });
+        });
+    }
+$(function(){
+	$("#btnSave1, #btnSave2").click(function(){$(this).parents("form").submit();return false;});
+});
+</script>
+<div class="box corner-top">
+    @using (Html.BeginForm())
+    {
+        <div class="form">
+            <p><label class="field">预约时间：</label>@Model.Date.ToString("yyyy-MM-dd") @Model.Time.ToString().PadLeft(2, '0'):00</p>
+            <p><label class="field">参观客户：</label>@Model.Custmor （@Model.CustmorCount 人）</p>
+            <p><label class="field">联系人姓名：</label>@Model.Contact （@Model.Tel）</p>
+            <p><label class="field">陪同人员：</label>@Model.Escort</p>
+            <p><label class="field">关注项目：</label>@Model.Follow</p>
+            <p><label class="field">状态：</label>@Model.Status</p>
+            <p>
+                <a id="btnReturn" href="/site/calendar/" class="btn-69">返回</a>&nbsp;<a id="btnCancel"
+                href="javascript:Delete('@Model.Id');" class="btn-69">取消预约</a>&nbsp;<a id="btnClose" href="javascript:UpdateStatus('@Model.Id','未参观');"
+                    class="btn-69">关闭预约</a><span class="explain">关闭预约后，预约记录会被标记为"未参观"状态</span></p>
+            <div class="hr">
+                <p>
+                    <label class="field">展项配置：</label><select name="seltype" id="seltype" class="small" onchange="javascript:GetDate()">
+                            <option value="0">-类型-</option>
+                            <option value="1">体验包</option>
+                            <option value="2">展项</option>
+                        </select>&nbsp;<select name="selpackage" id="selpackage" class="small" onchange="javascript:GetPlayItems()">
+                            <option value="0">-展项-</option>
+                        </select>&nbsp;<select name="selitem" id="selitem" class="small"><option value="0">-方案-</option>
+                        </select>&nbsp;<a id="btnAdd" href="javascript:AddResource();" class="btn-69">添加</a></p>
+                <div id="listItem"></div>
+                <p><button type="submit">保存配置</button></p>
+            </div>
+            <div class="hr">
+                <p><label class="field">客户反馈：</label><textarea name="Feedback" id="Feedback" class="text full" rows="5">@Model.Feedback</textarea></p>
+                <p><button type="submit">保存反馈</button><span class="explain">保存反馈后，预约记录会被标记为"已参观"状态</span></p>
+            </div>
+        </div>
+    }
+</div>
+<script>    InitPlayResource()</script>

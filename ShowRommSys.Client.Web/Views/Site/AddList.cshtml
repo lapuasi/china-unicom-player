@@ -1,0 +1,57 @@
+﻿@{
+    Layout = "~/Views/Shared/MasterPage.cshtml";
+}
+@model ShowRommSys.Client.Web.Models.ShowItemsList
+<script language="javascript" type="text/javascript">
+$.ajaxSetup({cache:false});
+    var itemcount = 0;
+    function GetResources() {
+        var defaultOP = "<option value='0'>-资源-</option>";
+        $("#ddl_Resource").empty();
+        $("#ddl_Resource").append(defaultOP);
+        if ($("#ddl_ResourceType").val() == "") {
+            return;
+        }
+        var url = "/Site/GetResources/" + $("#ddl_ResourceType").val() + "/";
+        $.getJSON(url, function (data) {
+            $.each(data, function (i, item) {
+                $("<option>" + item["Name"] + "</option>")
+    .val(item["Id"])
+    .appendTo($("#ddl_Resource"));
+            });
+        });
+    }
+    function AddResource() {
+        if ($("#ddl_Resource").val() == "0") {
+            alert("请先选择资源");
+            return;
+        }
+        InsertToDiv($("#ddl_Resource").find("option:selected").text(), $("#ddl_Resource").val());
+    }
+    function InsertToDiv(resource, rid) {
+        var count = $("#listResource").children("p").length;
+        var id = "presource" + (itemcount + 1);
+        var item = "<p id='" + id + "'> " + resource + "&nbsp;<a href='javascript:RemoveResource(\"" + id + "\");'>[移除]</a><input type='hidden' name='resourceid' value='" + rid + "'/></p>";
+        $("#listResource").append(item);
+        itemcount++;
+    }
+    function RemoveResource(id) {
+        $("#" + id + "").remove();
+    }
+</script>
+<div class="box corner-top">
+    @using (Html.BeginForm())
+    {
+        <div class="form">
+            <p><label class="field">编号：</label><input name="Code" id="Code" type="text" class="text" size="20" /><span class="explain">创建后不能修改</span></p>
+            <p><label class="field">名称：</label><input name="Name" id="Name" type="text" class="text" size="50" /></p>
+            <p><label class="field">内容描述：</label><textarea name="Description" id="Description" class="text full" rows="5"></textarea></p>
+            <p><label class="field">创建方法：</label><textarea name="CreateMethod" id="CreateMethod" class="text full" rows="5"></textarea></p>
+            <p><label class="field">包含资源：</label>
+                @Html.DropDownList("ddl_ResourceType", (List<SelectListItem>)ViewData["ResourcesType"], "-类型-", new { onchange = "GetResources()", @class = "small" })
+                &nbsp;<select name="ddl_Resource" id="ddl_Resource" class="small"><option value="0">-资源-</option></select>&nbsp;<a id="btnAdd" href="javascript:AddResource();" class="btn-69">添加</a></p>
+            <div id="listResource"></div>
+            <p><button type="submit">提交</button></p>
+        </div>
+    }
+</div>

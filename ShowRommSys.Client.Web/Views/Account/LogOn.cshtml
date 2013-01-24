@@ -1,0 +1,35 @@
+﻿@model ShowRommSys.Client.Web.Models.LogOnModel
+@{
+    ViewBag.Title = "Log On";
+    Layout = "~/Views/Shared/MasterPage.cshtml";
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<div class="login">
+    @using (Html.BeginForm())
+    {
+        @*<fieldset>*@
+            <p>
+                @Html.LabelFor(m => m.UserName)
+                @Html.TextBoxFor(m => m.UserName, new { @class = "text" })
+                @Html.ValidationMessageFor(m => m.UserName)
+            </p>
+            <p>
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password, new { @class = "text" })
+                @Html.ValidationMessageFor(m => m.Password)
+            </p>
+        @*<p><label>验证码：</label><input name="auth" type="text" class="text" size="7" maxlength="4" /><img id="imgAuth" src="../../Images/auth.jpg" alt="验证码" title="点击更换验证码" class="auth" /></p>*@
+            @*<p>
+                @Html.CheckBoxFor(m => m.RememberMe)
+                @Html.LabelFor(m => m.RememberMe)
+            </p>*@
+            <p>
+                <button type="submit">登录</button>
+@Html.ValidationSummary(true, "Login was unsuccessful. Please correct the errors and try again.")
+                @*<a id="btnLogin" href="@Url.Content("~/Site/Main/")" class="btn-69">登录</a>*@
+                @*@Html.ActionLink("登录","Main","Site","",new{@class="btn-69"})*@
+            </p>
+        @*</fieldset>*@
+    }
+</div>
