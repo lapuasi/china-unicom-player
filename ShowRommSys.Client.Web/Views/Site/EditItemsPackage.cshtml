@@ -3,8 +3,7 @@
     Layout = "~/Views/Shared/MasterPage.cshtml";
 }
 @model ShowRommSys.Client.Web.Models.ItemsPackage
-<script>
-$.ajaxSetup({cache:false});
+<script type="text/javascript">
     var itemcount = 0;
     function GetPlay() {
         if ($("#ddl_Items").val() == "") {
@@ -66,5 +65,5 @@ $.ajaxSetup({cache:false});
             <p><button type="submit">确定</button></p>
         </div>
     }
-    <script>InitPlayResource()</script>
+    <script type="text/javascript">InitPlayResource()</script>
 </div>

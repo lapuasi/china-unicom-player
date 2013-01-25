@@ -4,7 +4,6 @@
 }
 @model ShowRommSys.Client.Web.Models.Natures
 <script type="text/javascript">
-    $.ajaxSetup({cache:false});
     var itemcount = 0;
     function GetDate() {
         var defaultOP = "<option value='0'>-展项-</option>";
@@ -98,9 +97,6 @@
             });
         });
     }
-$(function(){
-	$("#btnSave1, #btnSave2").click(function(){$(this).parents("form").submit();return false;});
-});
 </script>
 <div class="box corner-top">
     @using (Html.BeginForm())
@@ -136,4 +132,4 @@ $(function(){
         </div>
     }
 </div>
-<script>    InitPlayResource()</script>
+<script type="text/javascript">InitPlayResource()</script>

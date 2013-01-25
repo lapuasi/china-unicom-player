@@ -4,8 +4,7 @@
 @model IEnumerable<ShowRommSys.Client.Web.Models.Items>
 @using Telerik.Web.Mvc.UI
 @using ShowRommSys.Client.Web.Models;
-<script>$.ajaxSetup({cache:false});</script>
-<script>
+<script type="text/javascript">
     function DeletePlayItem(id, name) {
         var url = '/Site/InitPlayResource/' + id + '/' + name;
         $.getJSON(url, function (data) {
@@ -53,8 +52,7 @@
 </script>
 <div class="box corner-top">
     <div class="tools">
-        <div class="action">
-            <a id="multiVerify" onclick="javascript:Delete('');" class="btn-69">批量删除</a></div>
+        <div class="action"><a id="multiVerify" onclick="javascript:Delete('');" class="btn-69">批量删除</a></div>
     </div>
     <div class="datas">
         @(Html.Telerik().StyleSheetRegistrar()

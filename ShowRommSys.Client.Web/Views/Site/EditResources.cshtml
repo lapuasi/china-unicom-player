@@ -4,10 +4,9 @@
 }
 
 @model ShowRommSys.Client.Web.Models.Resources
-<link href="../../Content/uploadify.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" language="javascript" src="../../Scripts/jquery.uploadify.v2.1.4.js"></script>
-<script src="../../Scripts/swfobject.js" type="text/javascript"></script>
-<script>$.ajaxSetup({cache:false});</script>
+<link type="text/css" rel="stylesheet" href="../../Content/uploadify.css" />
+<script type="text/javascript" src="../../Scripts/jquery.uploadify.v2.1.4.js"></script>
+<script type="text/javascript" src="../../Scripts/swfobject.js"></script>
 <script type="text/javascript">
 //    $(function () {
 //        $("input[name=Type]").click(function () {
@@ -46,32 +45,24 @@
     @using (Html.BeginForm())
     {
         @Html.ValidationSummary(true)
+        <input type="hidden" value="@Model.Type" id="Type" name="Type" />
+        <input type="hidden" value="@Model.CreateTime" id="CreateTime" name="CreateTime" />
+        <input type="hidden" value="@Model.Approve" id="Approve" name="Approve" />
         <div class="form">
-            <p>
-                <label class="field">
-                    资源名：</label>@Model.Name</p>
-                    <input type="hidden" value="@Model.Type" id="Type" name="Type"/>
-                    <input type="hidden" value="@Model.CreateTime" id="CreateTime" name="CreateTime"/>
-                    <input type="hidden" value="@Model.Approve" id="Approve" name="Approve"/>
+            <p><label class="field">资源名：</label>@Model.Name</p>
             <div class="hr">
             @if (Model.Type == 1)
             {
-                <p id="Type1">
-                    <label class="field">
-                        上传文件：</label>
+                <p id="Type1"><label class="field">上传文件：</label>
                     <input id="videofileInput" name="videofileInput" type="file" />
                     <a href="javascript:$('#videofileInput').uploadifyUpload()">上传</a><input type="hidden" id="Uri" name="Uri" value="@Model.Uri"/>
                 </p>
             }
             else
             {
-                <p id="Type2" style="">
-                    <label class="field">
-                        URL地址：</label><input name="Uri" type="text" class="text" size="70" value="@Model.Uri"/></p>
+                <p id="Type2" style=""><label class="field">URL地址：</label><input name="Uri" type="text" class="text" size="70" value="@Model.Uri"/></p>
             }
-                <p>
-                    <label class="field">
-                        备注：</label><textarea name="Remark" class="text full" rows="5" id="Remark">@Model.Remark</textarea></p>
+                <p><label class="field">备注：</label><textarea name="Remark" class="text full" rows="5" id="Remark">@Model.Remark</textarea></p>
             </div>
             <p><button type="submit">提交</button>&nbsp;<a href="@Url.Content("~/site/IndexResources")" class="btn-69">返回</a></p>
         </div>

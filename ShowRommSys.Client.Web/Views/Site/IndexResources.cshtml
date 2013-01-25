@@ -4,8 +4,7 @@
 }
 @model IEnumerable<ShowRommSys.Client.Web.Models.Resources>
 @using Telerik.Web.Mvc.UI
-<script>$.ajaxSetup({cache:false});</script>
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
     function _Approve() {
         var ids = getValues();
         if (ids == "") {
@@ -41,8 +40,7 @@
 </script>
 <div class="box corner-top">
     <div class="tools">
-        <div class="action">
-            <a id="multiVerify" onclick="javascript:_Approve();" class="btn-69">批量审核</a></div>
+        <div class="action"><a id="multiVerify" onclick="javascript:_Approve();" class="btn-69">批量审核</a></div>
     </div>
     <div class="datas">
         @(Html.Telerik().StyleSheetRegistrar()

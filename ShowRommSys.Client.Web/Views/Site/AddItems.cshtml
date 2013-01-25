@@ -2,8 +2,7 @@
     Layout = "~/Views/Shared/MasterPage.cshtml";
 }
 @model ShowRommSys.Client.Web.Models.Items
-<script type="text/javascript" language="javascript">
-    $.ajaxSetup({cache:false});
+<script type="text/javascript">
     var itemcount = 0;
     function GetResources() {
         var defaultOP = "<option value='0'>-资源-</option>";
@@ -46,7 +45,6 @@
 <div class="box corner-top">
     @using (Html.BeginForm())
     {
-	
         <div class="form">
             <p><label class="field">所属展项：</label>@Html.DropDownList("ListId", (List<SelectListItem>)ViewData["ShowLists"], "-选择-", new { @class = "small" })</p>
             <p><label class="field">方案名称：</label><input name="Name" id="Name" type="text" class="text" size="50" /></p>
@@ -63,6 +61,5 @@
             </div>
             <p><button type="submit">确定</button></p>
         </div>
-
     }
 </div>

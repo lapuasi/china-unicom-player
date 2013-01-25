@@ -2,10 +2,8 @@
     ViewBag.Title = "AddPlayItems";
     Layout = "~/Views/Shared/MasterPage.cshtml";
 }
-
 @model ShowRommSys.Client.Web.Models.Items
-<script type="text/javascript" language="javascript">
-$.ajaxSetup({cache:false});
+<script type="text/javascript">
     var itemcount = 0;
     function GetResources() {
         var defaultOP = "<option value='0'>-资源-</option>";

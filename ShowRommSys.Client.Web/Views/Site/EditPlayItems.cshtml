@@ -3,10 +3,8 @@
     Layout = "~/Views/Shared/MasterPage.cshtml";
 }
 @model ShowRommSys.Client.Web.Models.Items
-<script type="text/javascript" language="javascript">
-$.ajaxSetup({cache:false});
+<script type="text/javascript">
     var itemcount = 0;
-   
     function InitPlayResource() {
         var url = '/Site/InitPlayResource/@Model.Id/@ViewData["PlayName"]';
         $.getJSON(url, function (data) {
@@ -57,7 +55,6 @@ $.ajaxSetup({cache:false});
 <div class="box corner-top">
     @using (Html.BeginForm("AddItems", "Site"))
     {
-	
         <div class="form">
             <p>
                 <label class="field">
@@ -79,10 +76,8 @@ $.ajaxSetup({cache:false});
                 <div id="listResource">
                 </div>
             </div>
-            <p>
-                <input id="btnSub" type="submit" value="确   定" class="btn-69" /></p>
+            <p><button type="submit">确定</button></p>
         </div>
-
     }
     <script>InitPlayResource()</script>
 </div>
