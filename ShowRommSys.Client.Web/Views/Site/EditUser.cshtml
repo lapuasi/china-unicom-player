@@ -2,12 +2,12 @@
     Layout = "~/Views/Shared/MasterPage.cshtml";
 }
 @model ShowRommSys.Client.Web.Models.Users
-@using (Html.BeginForm())
-{
 <div class="box corner-top">
+    @using (Html.BeginForm())
+    {
     <div class="form">
-        <p><label class="field">工号：</label><input name="Number" id="Number" type="text" class="text" size="20" value="@Model.Number" /></p>
-        <p><label class="field">密码：</label><input name="Password" id="Password" type="password" class="text" size="20" /><span class="explain">若不修改请留空</span></p>
+        <p><label class="field">工号：</label><input name="Number" id="Number" type="text" class="text" size="20" value="@Model.Number" autocomplete="off" /></p>
+        <p><label class="field">密码：</label><input name="Password" id="Password" type="password" class="text" size="20" autocomplete="off" /><span class="explain">若不修改请留空</span></p>
         <p><label class="field">角色：</label>
             @foreach (var v in new ShowRommSys.Client.Web.Models.ShowRoomSysEntities().Roles)
             {
@@ -26,7 +26,7 @@
             <p><label class="field">邮件：</label><input name="Email" id="Email" type="text" class="text" size="50" value="@Model.Email" /></p>
             <p><label class="field">备注：</label><textarea name="Remark" id="Remark" class="text full" rows="5">@Model.Remark</textarea></p>
         </div>
-        <p><button type="submit">确定</button></p>
+        <p><button type="submit">保存</button>&nbsp;<a href="@Url.Content("~/site/IndexUser")" class="btn-69">返回</a></p>
     </div>
+    }
 </div>
-}

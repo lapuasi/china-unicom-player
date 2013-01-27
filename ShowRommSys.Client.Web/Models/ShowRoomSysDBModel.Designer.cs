@@ -2369,6 +2369,30 @@ namespace ShowRommSys.Client.Web.Models
         private global::System.Int32 _NaId;
         partial void OnNaIdChanging(global::System.Int32 value);
         partial void OnNaIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String FollowLevel
+        {
+            get
+            {
+                return _FollowLevel;
+            }
+            set
+            {
+                OnFollowLevelChanging(value);
+                ReportPropertyChanging("FollowLevel");
+                _FollowLevel = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FollowLevel");
+                OnFollowLevelChanged();
+            }
+        }
+        private global::System.String _FollowLevel;
+        partial void OnFollowLevelChanging(global::System.String value);
+        partial void OnFollowLevelChanged();
 
         #endregion
 

@@ -6,7 +6,6 @@
 <link href="../../Content/uploadify.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" language="javascript" src="../../Scripts/jquery.uploadify.v2.1.4.js"></script>
 <script src="../../Scripts/swfobject.js" type="text/javascript"></script>
-<script>$.ajaxSetup({cache:false});</script>
 <script type="text/javascript">
     $(function () {
         $("input[name=Type]").click(function () {
@@ -20,7 +19,7 @@
             'script': '/Site/UploadFile',
             'folder': '/UploadFiles/',
             'cancelImg': '../../Images/Cancel.png',
-            'sizeLimit': 1024 * 1024 * 4 * 25, //100M
+            'sizeLimit': 1024 * 1024 * 1000, //1000M
             'multi': false,
             'onSelect': onSelect,
             'onComplete': funvideo,
@@ -28,7 +27,6 @@
         });
     });
     function onError(event, queueID, fileObj) {
-        
         alert("文件:" + fileObj.name + "上传失败");
     }
     function onSelect(e, queueId, fileObj) {
@@ -48,23 +46,16 @@
         @Html.ValidationSummary(true)
         <div class="form">
             <p>
-                <label class="field">
-                    资源类型：</label><label class="checkbox">@Html.RadioButton("Type", 1, true) 文件</label><label
-                        class="checkbox">
-                        @Html.RadioButton("Type", 2, false) URL</label></p>
+                <label class="field">资源类型：</label>
+                <label class="checkbox">@Html.RadioButton("Type", 1, true) 文件</label>
+                <label class="checkbox">@Html.RadioButton("Type", 2, false) URL</label>
+                <label class="checkbox">@Html.RadioButton("Type", 3, false) 程序</label>
+            </p>
             <div class="hr">
-                <p id="Type1">
-                    <label class="field">
-                        上传文件：</label>
-                    <input id="videofileInput" name="videofileInput" type="file" />
-                    <a href="javascript:$('#videofileInput').uploadifyUpload()">上传</a><input type="hidden" id="FilePath" name="FilePath"/>
-                </p>
-                <p id="Type2" style="display: none;">
-                    <label class="field">
-                        URL地址：</label><input name="url" type="text" class="text" size="70" /></p>
-                <p>
-                    <label class="field">
-                        备注：</label><textarea name="Remark" class="text full" rows="5" id="Remark"></textarea></p>
+                <p id="Type1"><label class="field">上传文件：</label><input id="videofileInput" name="videofileInput" type="file" /><a href="javascript:$('#videofileInput').uploadifyUpload()">上传</a><input type="hidden" id="FilePath" name="FilePath" /></p>
+                <p id="Type2" style="display:none;"><label class="field">URL地址：</label><input name="url" type="text" class="text" size="70" /></p>
+                <p id="Type3" style="display:none;"><label class="field">程序路径：</label><input name="exepath" type="text" class="text" size="70" /></p>
+                <p><label class="field">备注：</label><textarea name="Remark" class="text full" rows="5" id="Remark"></textarea></p>
             </div>
             <p><button type="submit">提交</button></p>
         </div>

@@ -115,9 +115,13 @@ namespace ShowRommSys.Client.Web.Controllers
                 string category = string.Empty;
                 if (type == "2")
                     category = "链接";
+                else if (type == "3")
+                {
+                    category = "应用程序";
+                }
                 else
                 {
-                    switch (Path.GetExtension(Request.Form["FilePath"]).ToLower().Replace(".",""))
+                    switch (Path.GetExtension(Request.Form["FilePath"]).ToLower().Replace(".", ""))
                     {
                         case "ppt":
                         case "pptx":
@@ -135,21 +139,27 @@ namespace ShowRommSys.Client.Web.Controllers
                         case "wmv":
                             category = "视频";
                             break;
+                        case "pdf":
+                            category = "PDF";
+                            break;
                         default:
                             category = "其它";
                             break;
                     }
                 }
-                DBContext.Resources.AddObject(new Resources
-                {
-                    Type = int.Parse(type),
-                    Approve = false,
-                    Remark = rs.Remark==null? "":rs.Remark,
-                    Uri = type == "1" ? Request.Form["FilePath"] : Request.Form["url"],
-                    CreateTime = DateTime.Now,
-                    Category = category,
-                    Name = type == "1" ? Path.GetFileNameWithoutExtension(Request.Form["FilePath"]): Request.Form["url"]
-                });
+                Resources res = new Resources();
+                res.Type = int.Parse(type);
+                res.Approve = false;
+                res.Remark = rs.Remark == null ? "" : rs.Remark;
+                res.Uri = type == "1" ? Request.Form["FilePath"] : Request.Form["url"];
+                if (type == "3")
+                    res.Uri = Request.Form["exepath"];
+                res.CreateTime = DateTime.Now;
+                res.Category = category;
+                res.Name = type == "1" ? Path.GetFileNameWithoutExtension(Request.Form["FilePath"]) : Request.Form["url"];
+                if (type == "3")
+                    res.Name = Path.GetFileNameWithoutExtension(Request.Form["exepath"]);
+                DBContext.Resources.AddObject(res);
                 DBContext.SaveChanges();
                 return RedirectToAction("IndexResources");
             }
@@ -188,9 +198,9 @@ namespace ShowRommSys.Client.Web.Controllers
             string category = string.Empty;
             if (rs.Type == 2)
                 category = "链接";
-            else
+            else if (rs.Type == 1)
             {
-                switch (Path.GetExtension(rs.Uri).ToLower().Replace(".",""))
+                switch (Path.GetExtension(rs.Uri).ToLower().Replace(".", ""))
                 {
                     case "ppt":
                     case "pptx":
@@ -213,13 +223,15 @@ namespace ShowRommSys.Client.Web.Controllers
                         break;
                 }
             }
+            else
+                category = "应用程序";
             resource.Type = rs.Type;
             resource.Category = category;
             resource.Uri = rs.Uri;
             resource.Remark = rs.Remark;
             resource.Approve = rs.Approve;
             resource.CreateTime = rs.CreateTime;
-            resource.Name = rs.Type == 1 ? Path.GetFileNameWithoutExtension(rs.Uri) : rs.Uri;
+            resource.Name = rs.Type == 2 ? rs.Uri : Path.GetFileNameWithoutExtension(rs.Uri);
             DBContext.SaveChanges();
             return RedirectToAction("IndexResources");
         }
@@ -262,7 +274,9 @@ namespace ShowRommSys.Client.Web.Controllers
                 var svc = new ControlService.MainControlClient(ctx);
                 svc.ClientCredentials.Windows.ClientCredential.UserName = System.Configuration.ConfigurationManager.AppSettings["user"];
                 svc.ClientCredentials.Windows.ClientCredential.Password = System.Configuration.ConfigurationManager.AppSettings["pwd"];
-                return svc.GetOnLineStatus();
+                string result = svc.GetOnLineStatus();
+                svc.ChannelFactory.Close();
+                return result;
             }
             catch {
                 return "";
@@ -632,14 +646,21 @@ namespace ShowRommSys.Client.Web.Controllers
         public ActionResult DetailNatures(int ID)
         {
             var obj = DBContext.Natures.FirstOrDefault(e => e.Id == ID);
-            
+            var list = DBContext.NaturesItemsSet.Where(e => e.Id == ID).Select(e=>e.ListId);
+            var slist = DBContext.ShowItemsList.Where(e => list.Contains(e.Id) == true);
+            List<SelectListItem> select = new List<SelectListItem>();
+            foreach (var v in slist)
+            {
+                select.Add(new SelectListItem { Value = v.Id.ToString(), Text = v.Name });
+            }
+            ViewData["list"] = select;
             return View(obj);
         }
         [HttpPost]
         public ActionResult DetailNatures(Natures na)
         {
             var obj = DBContext.Natures.FirstOrDefault(e => e.Id == na.Id);
-            obj.Feedback = na.Feedback==null?"":na.Feedback;
+            obj.Feedback = na.Feedback == null ? "" : na.Feedback;
             if (obj.Feedback != "")
                 obj.Status = "已参观";
             var list = DBContext.NaturesItemsSet.Where(e => e.NaId == na.Id);
@@ -656,18 +677,38 @@ namespace ShowRommSys.Client.Web.Controllers
                 {
                     if (items[i] != string.Empty && playnames[i] != string.Empty)
                     {
-                        NaturesItems ir = new NaturesItems { ListId = int.Parse(items[i]), ItemId = int.Parse(playnames[i]) ,NaId=na.Id};
+                        NaturesItems ir = new NaturesItems { ListId = int.Parse(items[i]), ItemId = int.Parse(playnames[i]), NaId = na.Id };
                         DBContext.AddToNaturesItemsSet(ir);
                     }
                 }
-                DBContext.SaveChanges();
             }
+            DBContext.SaveChanges();
+            var follow = DBContext.NaturesItemsSet.Where(e => e.NaId == na.Id).ToList();
+            foreach (var v in follow)
+            {
+                v.FollowLevel = "";
+            }
+            if (Request.Form["follow"] != null && Request.Form["level"] != null)
+            {
+                string[] listids = Request.Form["resourceid"].Split(',');
+                string[] levels = Request.Form["level"].Split(',');
+                for (int i = 0; i < listids.Length; i++)
+                {
+                    int id = int.Parse(listids[i]);
+                    var result = follow.Where(e => e.ListId == id && e.NaId == na.Id);
+                    foreach (var r in result)
+                    {
+                        r.FollowLevel = levels[i];
+                    }
+                }
+            }
+            DBContext.SaveChanges();
             return RedirectToAction("Calendar");
         }
         public JsonResult DeleteNature(int ID)
         {
             var obj = DBContext.Natures.FirstOrDefault(e => e.Id == ID);
-            DBContext.DeleteObject(obj);
+            obj.Status = "取消预约";
             DBContext.SaveChanges();
             return null;
         }
@@ -690,12 +731,40 @@ namespace ShowRommSys.Client.Web.Controllers
                 return Json(DBContext.Items.Where(e => e.ListId == ID).ToList(), JsonRequestBehavior.AllowGet);
             return null;
         }
-        public JsonResult GetItemsPackages()
+        //public JsonResult GetPackageItems(int ID)
+        //{
+        //    if (name == 1)
+        //    {
+        //        var q = from s in DBContext.ShowItemsList
+        //                join p in DBContext.PackageItems on s.Id equals p.ListId
+        //                where p.PackageId == ID
+        //                select s;
+        //        return Json(q.ToList(), JsonRequestBehavior.AllowGet);
+        //    }
+        //    if (name == 2)
+        //        return Json(DBContext.Items.Where(e => e.ListId == ID).ToList(), JsonRequestBehavior.AllowGet);
+        //    return null;
+        //}
+        public JsonResult GetPackages()
         {
             return Json(DBContext.ItemsPackage.ToList(), JsonRequestBehavior.AllowGet);
         }
+        public JsonResult GetItemsPackages(int ID)
+        {
+            var q = from p in DBContext.PackageItems
+                    join s in DBContext.ShowItemsList on p.ListId equals s.Id
+                    join i in DBContext.Items on p.ItemId equals i.Id
+                    where p.PackageId == ID
+                    select new { listname = s.Name, itemname = i.Name, listid = s.Id, itemid = i.Id };
+            return Json(q.ToList(), JsonRequestBehavior.AllowGet);
+        }
         public JsonResult GetListItems(int ID)
         {
+            var q = from p in DBContext.PackageItems
+                    join s in DBContext.ShowItemsList on p.ListId equals s.Id
+                    join i in DBContext.Items on p.ItemId equals i.Id
+                    where p.PackageId == ID
+                    select s;
             return Json(DBContext.Items.Where(e => e.ListId == ID).ToList(), JsonRequestBehavior.AllowGet);
         }
         public JsonResult UpdateStatus(int ID,string name)
@@ -715,6 +784,35 @@ namespace ShowRommSys.Client.Web.Controllers
                 {
                     string result = DBContext.ShowItemsList.FirstOrDefault(e => e.Id == v.ListId).Name + "," + DBContext.Items.FirstOrDefault(e => e.Id == v.ItemId).Name + ",";
                     result += v.ListId.ToString() + "," + v.ItemId;
+                    list.Add(result);
+                }
+                return Json(list, JsonRequestBehavior.AllowGet);
+            }
+            else
+                return null;
+        }
+        public JsonResult InitFollowLevel(int? ID)
+        {
+            if (ID != null)
+            {
+                var q = from p in DBContext.NaturesItemsSet
+                        where p.NaId == ID && p.FollowLevel != ""
+                        group p by new
+                        {
+                            p.ListId,
+                            p.FollowLevel
+                        }
+                            into g
+                            select new
+                            {
+                                g.Key,
+                                g
+                            };
+                List<string> list = new List<string>();
+                foreach (var v in q)
+                {
+                    string result = DBContext.ShowItemsList.FirstOrDefault(e => e.Id == v.Key.ListId).Name + "," + v.Key.ListId + ",";
+                    result += v.Key.FollowLevel;
                     list.Add(result);
                 }
                 return Json(list, JsonRequestBehavior.AllowGet);
@@ -865,25 +963,39 @@ namespace ShowRommSys.Client.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult OptionPlay(int ID,string name)
+        public JsonResult OptionPlay(int ID,string name)
         {
-            InstanceContext ctx = new InstanceContext(this);
-            ControlService.MainControlClient svc = new ControlService.MainControlClient(ctx);
-            svc.ClientCredentials.Windows.ClientCredential.UserName = System.Configuration.ConfigurationManager.AppSettings["user"];
-            svc.ClientCredentials.Windows.ClientCredential.Password = System.Configuration.ConfigurationManager.AppSettings["pwd"];
-            svc.Option2((ControlService.OptionType)ID, name.Replace("-", ":"));
-            return null;
+            try
+            {
+                InstanceContext ctx = new InstanceContext(this);
+                ControlService.MainControlClient svc = new ControlService.MainControlClient(ctx);
+                svc.ClientCredentials.Windows.ClientCredential.UserName = System.Configuration.ConfigurationManager.AppSettings["user"];
+                svc.ClientCredentials.Windows.ClientCredential.Password = System.Configuration.ConfigurationManager.AppSettings["pwd"];
+                svc.Option2((ControlService.OptionType)ID, name.Replace("-", ":"));
+                svc.ChannelFactory.Close();
+            }
+            catch {
+                return Json("无法联系服务", JsonRequestBehavior.AllowGet);
+            }
+            return Json("", JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public ActionResult StartPlay(string id, string name)
+        public JsonResult StartPlay(string id, string name)
         {
-            InstanceContext ctx = new InstanceContext(this);
-            ControlService.MainControlClient svc = new ControlService.MainControlClient(ctx);
-            svc.ClientCredentials.Windows.ClientCredential.UserName = System.Configuration.ConfigurationManager.AppSettings["user"];
-            svc.ClientCredentials.Windows.ClientCredential.Password = System.Configuration.ConfigurationManager.AppSettings["pwd"];
-            //svc.Option2(ControlService.OptionType.Start, ShowRoomSys.CommonLib.Common.MAC);
-            svc.Option3(ControlService.OptionType.Start, id.Replace("-",":"), name);
-            return null;
+            try
+            {
+                InstanceContext ctx = new InstanceContext(this);
+                ControlService.MainControlClient svc = new ControlService.MainControlClient(ctx);
+                svc.ClientCredentials.Windows.ClientCredential.UserName = System.Configuration.ConfigurationManager.AppSettings["user"];
+                svc.ClientCredentials.Windows.ClientCredential.Password = System.Configuration.ConfigurationManager.AppSettings["pwd"];
+                //svc.Option2(ControlService.OptionType.Start, ShowRoomSys.CommonLib.Common.MAC);
+                svc.Option3(ControlService.OptionType.Start, id.Replace("-", ":"), name);
+                svc.ChannelFactory.Close();
+            }
+            catch {
+                return Json("无法联系服务", JsonRequestBehavior.AllowGet);
+            }
+            return Json("", JsonRequestBehavior.AllowGet);
         }
         public void SendMessage(ControlService.OptionType type)
         {
@@ -901,16 +1013,16 @@ namespace ShowRommSys.Client.Web.Controllers
             string result = "";
             if (null != FileData)
             {
-                //try
-                //{
+                try
+                {
                     result = Path.GetFileName(FileData.FileName); 
                     string saveName = result; 
                     result = SaveFile(FileData, folder, saveName); 
-                //}
-                //catch (Exception ex)
-                //{
-                //    result = ex.Message;
-                //}
+                }
+                catch (Exception ex)
+                {
+                    result = ex.Message;
+                }
             }
             return Content(result);
         }
@@ -970,7 +1082,6 @@ namespace ShowRommSys.Client.Web.Controllers
         {
             string xpsFilePath = phyPath + Path.GetFileNameWithoutExtension(fileName) + ".xps";
             return OfficeToXps.ConvertToXps(phyPath + fileName, ref xpsFilePath).Result;
-
         }
         #endregion
 

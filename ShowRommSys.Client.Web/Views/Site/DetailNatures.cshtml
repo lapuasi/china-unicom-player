@@ -5,6 +5,8 @@
 @model ShowRommSys.Client.Web.Models.Natures
 <script type="text/javascript">
     var itemcount = 0;
+    var fitemcount = 0;
+    $.ajaxSetup({ cache: false });
     function GetDate() {
         var defaultOP = "<option value='0'>-展项-</option>";
         $("#selpackage").empty();
@@ -15,9 +17,11 @@
         var url
         if ($("#seltype").val() == "2") {
             url = "/Site/GetItems/";
+            $("#selitem").css('display', '');
         }
         else {
-            url = "/Site/GetItemsPackages/"
+            url = "/Site/GetPackages/"
+            $("#selitem").css('display', 'none');
         }
         $.getJSON(url, function (data) {
             $.each(data, function (i, item) {
@@ -28,27 +32,32 @@
         });
     }
     function GetPlayItems() {
-        var defaultOP = "<option value='0'>-方案-</option>";
+        var defaultOP = "<option value='0'>-方式-</option>";
         $("#selitem").empty();
         $("#selitem").append(defaultOP);
         if ($("#selpackage").val() == "0") {
             return;
         }
-        var url = "/Site/GetPlayItems/" + $("#selpackage").val() + "/" + $("#seltype").val() + "/";
-        $.getJSON(url, function (data) {
-            $.each(data, function (i, item) {
-                $("<option>" + item["Name"] + "</option>")
+        if ($("#seltype").val() == "1") {
+            $("#selitem").css('display', 'none');
+        }
+        if ($("#seltype").val() == "2") {
+            var url = "/Site/GetPlayItems/" + $("#selpackage").val() + "/" + $("#seltype").val() + "/";
+            $.getJSON(url, function (data) {
+                $.each(data, function (i, item) {
+                    $("<option>" + item["Name"] + "</option>")
                 .val(item["Id"])
                 .appendTo($("#selitem"));
+                });
             });
-        });
+        }
     }
     function AddResource() {
         if ($("#selpackage").val() == "0") {
             alert("请先选择展项");
             return;
         }
-        if ($("#selitem").val() == "0") {
+        if ($("#selitem").val() == "0" && $("#seltype").val() == "2") {
             alert("请先选择方式");
             return;
         }
@@ -56,10 +65,10 @@
             InsertToDiv($("#selpackage").find("option:selected").text(), $("#selitem").find("option:selected").text(), $("#selpackage").val(), $("#selitem").val());
         }
         if ($("#seltype").val() == "1") {
-            var url = "/Site/GetListItems/" + $("#selitem").val() + "/";
+            var url = "/Site/GetItemsPackages/" + $("#selpackage").val() + "/";
             $.getJSON(url, function (data) {
                 $.each(data, function (i, item) {
-                    InsertToDiv($("#selitem").find("option:selected").text(), item["Name"], $("#selitem").val(), item["Id"]);
+                    InsertToDiv(item["listname"], item["itemname"], item["listid"], item["itemid"]);
                 });
             });
         }
@@ -70,10 +79,19 @@
         $("#listItem").append(item);
         itemcount++;
     }
+    function AddFollow() {
+        InsertFollow($("#ddl_Follow").find("option:selected").text(), $("#ddl_Follow").val(), $("#sellevel").val());
+    }
+    function InsertFollow(folloname,followid,level) {
+        var id = "follow" + fitemcount;
+        var item = "<p id='" + id + "'>" + folloname + "（" + level + "）&nbsp;<a href='javascript:RemoveResource(\"" + id + "\");'>[移除]</a><input type='hidden' name='follow' value='" + followid + "'/><input type='hidden' name='level' value='" + level + "'/></p>";
+        $("#flistItem").append(item);
+        fitemcount++;
+    }
     function RemoveResource(id) {
         $("#" + id + "").remove();
     }
-    function UpdateStatus(id,status) {
+    function UpdateStatus(id, status) {
         var url = "/Site/UpdateStatus/" + id + "/" + status + "/";
         $.getJSON(url, function (data) {
             window.location.href = "/site/Calendar";
@@ -97,6 +115,15 @@
             });
         });
     }
+    function InitFollowLevel() {
+        var url = '/Site/InitFollowLevel/@Model.Id/';
+        $.getJSON(url, function (data) {
+            $.each(data, function (i, item) {
+                var results = item.split(",");
+                InsertFollow(results[0], results[1], results[2]);
+            });
+        });
+    }
 </script>
 <div class="box corner-top">
     @using (Html.BeginForm())
@@ -114,18 +141,19 @@
                     class="btn-69">关闭预约</a><span class="explain">关闭预约后，预约记录会被标记为"未参观"状态</span></p>
             <div class="hr">
                 <p>
-                    <label class="field">展项配置：</label><select name="seltype" id="seltype" class="small" onchange="javascript:GetDate()">
-                            <option value="0">-类型-</option>
-                            <option value="1">体验包</option>
-                            <option value="2">展项</option>
-                        </select>&nbsp;<select name="selpackage" id="selpackage" class="small" onchange="javascript:GetPlayItems()">
-                            <option value="0">-展项-</option>
-                        </select>&nbsp;<select name="selitem" id="selitem" class="small"><option value="0">-方案-</option>
-                        </select>&nbsp;<a id="btnAdd" href="javascript:AddResource();" class="btn-69">添加</a></p>
+                    <label class="field">展项配置：</label><select name="seltype" id="seltype" class="small" onchange="javascript:GetDate()"><option value="0">-类型-</option><option value="1">体验包</option><option value="2">展项</option></select>
+                        &nbsp;<select name="selpackage" id="selpackage" class="small" onchange="javascript:GetPlayItems()"><option value="0">-展项-</option></select>
+                        &nbsp;<select name="selitem" id="selitem" class="small"><option value="0">-方案-</option></select>
+			&nbsp;<a id="btnAdd" href="javascript:AddResource();" class="btn-69">添加</a></p>
                 <div id="listItem"></div>
                 <p><button type="submit">保存配置</button></p>
             </div>
             <div class="hr">
+                <p><label class="field">关注项目：</label>
+                    @Html.DropDownList("ddl_Follow", (List<SelectListItem>)ViewData["list"], "-展项-", new { @class = "small" })
+                    &nbsp;<select name="sellevel" class="small"><option value="0">-程度-</option><option value="强烈">强烈</option><option value="一般">一般</option></select>
+		    &nbsp;<a id="btnAddFeedback" href="javascript:;" class="btn-69">添加</a><span class="explain">强烈：客户表达出明显的签约合作意向；一般：客户对产品表示关注</span></p>
+                <div id="flistItem"></div>
                 <p><label class="field">客户反馈：</label><textarea name="Feedback" id="Feedback" class="text full" rows="5">@Model.Feedback</textarea></p>
                 <p><button type="submit">保存反馈</button><span class="explain">保存反馈后，预约记录会被标记为"已参观"状态</span></p>
             </div>

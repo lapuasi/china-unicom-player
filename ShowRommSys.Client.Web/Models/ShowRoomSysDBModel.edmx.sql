@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 01/13/2013 12:47:25
+-- Date Created: 01/18/2013 23:59:21
 -- Generated from EDMX file: G:\SkyDrive\project Code\ShowRoomSys.Service\ShowRommSys.Client.Web\Models\ShowRoomSysDBModel.edmx
 -- --------------------------------------------------
 
@@ -275,7 +275,8 @@ CREATE TABLE [dbo].[NaturesItemsSet] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [ItemId] int  NOT NULL,
     [ListId] int  NOT NULL,
-    [NaId] int  NOT NULL
+    [NaId] int  NOT NULL,
+    [FollowLevel] nvarchar(max)  NULL
 );
 GO
 

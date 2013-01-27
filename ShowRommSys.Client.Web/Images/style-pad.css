@@ -74,7 +74,8 @@ input{outline-style:none;outline-width:initial;outline-color:initial;}
 .playlist .filetype-txt{background-position:-128px -288px;}
 .playlist .filetype-img{background-position:-160px -288px;}
 .playlist .filetype-avi{background-position:-192px -288px;}
-.playlist .filetype-mp3{background-position:-224px -288px;}
+.playlist .filetype-swf{background-position:-192px -288px;}
+.playlist .filetype-exe{background-position:-224px -288px;}
 .playlist .filetype-url{background-position:-256px -288px;}
 
 .control a{display:inline-block;height:32px;line-height:200px;background:url(images-pad.png) no-repeat 999px 999px;overflow:hidden;}

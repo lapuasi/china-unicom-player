@@ -113,7 +113,7 @@
                 .Scrollable(scrolling => scrolling.Enabled(false))
                 .Sortable(sorting => sorting.Enabled(true))
                 .Pageable(paging => paging.PageSize(10).Style(pagerStyles).Position(GridPagerPosition.Both))
-                .Filterable(filtering => filtering.Enabled(true))
+                .Filterable()
                 .Groupable(grouping => grouping.Enabled(false))
                 .Selectable()
                 .Footer(true).Render();

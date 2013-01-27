@@ -30,43 +30,75 @@ namespace ShowRommSys.Client.Web.Controllers
             if (ID.HasValue)
             {
                 var lists = DBContext.ItemsResources.Where(e => e.ItemId == ID).ToList();
+                //<div class='button'><a href='javascript:;' class='button' id='btnNext'>开始演示</a></div>
                 StringBuilder html = new StringBuilder(@"<div class='top'>
                     <div class='title one right'>
                         " + name + @"</div>
                 </div>
                 <div class='content'>
-                    <div class='label'><h2>共" + lists.Count + @"个媒体</h2></div>
+                    
+                    <div class='label'>
+                        <h2>
+                            共" + lists.Count + @"个媒体</h2>
+                    </div>
                     <div class='playlist'>
                         <ul>");
                 foreach (var v in lists)
                 {
                     var resource = DBContext.Resources.FirstOrDefault(e => e.Id == v.ResourceId);
                     var device = DBContext.Device.FirstOrDefault(e => e.Id == v.DeviceId);
-                    string str = "filetype-ppt";
+                    string str = "";
                     string ext = Path.GetExtension(resource.Uri).ToLower();
+                    System.Text.RegularExpressions.Regex re = new System.Text.RegularExpressions.Regex(@"^(http|HTTP|https|HTTPS)://([\w-]+\.)*[\w-]+(:\d+)?(/[\u4e00-\u9fa5\w- ./?%&=]*)?$");
+                    if (re.IsMatch(resource.Uri))
+                        ext = ".url";
                     switch (ext)
                     {
                         case ".ppt":
                         case ".pptx":
-                            str = "filetype-ppt";
+                            str = "filetype filetype-ppt";
                             break;
                         case ".doc":
                         case ".docx":
-                            str = "filetype-doc";
+                            str = "filetype filetype-doc";
                             break;
                         case ".xls":
                         case ".xlsx":
-                            str = "filetype-excel";
+                            str = "filetype filetype-xls";
                             break;
                         case ".avi":
                         case ".wmv":
-                            str = "filetype-avi";
+                            str = "filetype filetype-avi";
+                            break;
+                        case ".jpg":
+                        case ".png":
+                        case ".bmp":
+                            str = "filetype filetype-img";
+                            break;
+                        case ".pdf":
+                            str = "filetype filetype-pdf";
+                            break;
+                        case ".url":
+                            str = "filetype filetype-url";
+                            break;
+                        case ".exe":
+                            str = "filetype filetype-exe";
                             break;
                         default:
                             break;
                     }
-                    html.Append("<li><p class='subject'><span class='filetype " + str + "'></span><span class='filename'>" + resource.Name + "</span></p>");
-                    html.Append("<p class='control'><a href='javascript:OptionPlay(1,\"" + device.MAC + "\");' class='rw'>RW</a><a href='javascript:StartPlay(\"" + device.MAC + "\",\"" + resource.Uri + "\");' >开始</a><a href='javascript:OptionPlay(8,\"" + device.MAC + "\");' class='ff'>全屏</a><a href='javascript:OptionPlay(2,\"" + device.MAC + "\");' class='ff'>FF</a></p></li>");
+                    html.Append(@"
+                            <li>
+                                <p class='subject'>
+                                    <span class='" + str + @"'></span><span class='filename'>" + resource.Name + "</span></p>");
+                    html.Append("<p class='control'>");
+                    string[] arrExts = {".jpg",".png",".bmp",".url",".exe"};
+                    if (!arrExts.Contains(ext))
+                        html.Append("<a href='javascript:OptionPlay(1,\"" + device.MAC + "\");' class='rw'>RW</a>");
+                    html.Append("<a href='javascript:StartPlay(\"" + device.MAC + "\",\"" + resource.Uri + "\");' class='play'>开始</a>");
+                    if (!arrExts.Contains(ext))
+                        html.Append("<a href='javascript:OptionPlay(2,\"" + device.MAC + "\");' class='rw'>FF</a>");
+                    html.Append("</li>");//<a href='javascript:OptionPlay(8,\"" + device.MAC + "\");' class='ff'>全屏</a>
 
                 }
                 html.Append("</ul></div></div>");

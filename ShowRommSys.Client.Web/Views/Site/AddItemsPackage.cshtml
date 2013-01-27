@@ -51,9 +51,10 @@
             <p><label class="field">备注：</label><textarea name="Remark" id="Remark" class="text full" rows="5"></textarea></p>
             <p><label class="field">包含展项：</label>
                 @Html.DropDownList("ddl_Items", (List<SelectListItem>)ViewData["Items"], "-展项-", new { onchange = "GetPlay()", @class = "small" })
-                &nbsp;<select name="ddl_Play" class="small" id="ddl_Play"><option value="0">-方式-</option></select>&nbsp;<a id="btnAdd" href="javascript:AddResource();" class="btn-69">添加</a></p>
+                &nbsp;<select name="ddl_Play" class="small" id="ddl_Play"><option value="0">-方式-</option></select>
+                &nbsp;<a id="btnAdd" href="javascript:AddResource();" class="btn-69">添加</a></p>
             <div id="listItem"></div>
-            <p><button type="submit">确定</button></p>
+            <p><button type="submit">提交</button></p>
         </div>
     }
 </div>

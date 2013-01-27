@@ -218,6 +218,7 @@
     <Property Name="ItemId" Type="int" Nullable="false" />
     <Property Name="ListId" Type="int" Nullable="false" />
     <Property Name="NaId" Type="int" Nullable="false" />
+    <Property Name="FollowLevel" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="Roles">
     <Key>
@@ -459,6 +460,7 @@
           <Property Type="Int32" Name="ItemId" Nullable="false" />
           <Property Type="Int32" Name="ListId" Nullable="false" />
           <Property Type="Int32" Name="NaId" Nullable="false" />
+          <Property Type="String" Name="FollowLevel" Nullable="true" />
         </EntityType>
         <EntityType Name="Roles">
           <Key>
@@ -695,6 +697,7 @@
           <ScalarProperty Name="ItemId" ColumnName="ItemId" />
           <ScalarProperty Name="ListId" ColumnName="ListId" />
           <ScalarProperty Name="NaId" ColumnName="NaId" />
+          <ScalarProperty Name="FollowLevel" ColumnName="FollowLevel" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -760,7 +763,7 @@
         <EntityTypeShape EntityType="ShowRoomSysModel.ListResources" Width="1.5" PointX="2.25" PointY="4.75" Height="1.5956835937499996" />
         <EntityTypeShape EntityType="ShowRoomSysModel.PackageItems" Width="1.5" PointX="4" PointY="2.875" Height="1.7879850260416665" />
         <EntityTypeShape EntityType="ShowRoomSysModel.Natures" Width="1.5" PointX="4.125" PointY="4.875" Height="3.5186979166666656" />
-        <EntityTypeShape EntityType="ShowRoomSysModel.NaturesItems" Width="1.5" PointX="6" PointY="5.25" Height="1.7879850260416665" />
+        <EntityTypeShape EntityType="ShowRoomSysModel.NaturesItems" Width="1.5" PointX="6" PointY="5.25" Height="1.9802864583333326" />
         <EntityTypeShape EntityType="ShowRoomSysModel.Roles" Width="1.5" PointX="11.25" PointY="5.875" Height="1.4033821614583326" />
         <EntityTypeShape EntityType="ShowRoomSysModel.RolesRights" Width="1.5" PointX="9.5" PointY="4" Height="1.5956835937499996" />
         <EntityTypeShape EntityType="ShowRoomSysModel.UserLog" Width="1.5" PointX="12.875" PointY="1" Height="1.59568359375" />

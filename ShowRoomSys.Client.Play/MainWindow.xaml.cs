@@ -22,6 +22,7 @@ using System.Drawing;
 using System.Windows.Threading;
 using System.Diagnostics;
 using System.ComponentModel;
+using System.Web;
 
 namespace ShowRoomSys.Client.Play
 {
@@ -45,10 +46,12 @@ namespace ShowRoomSys.Client.Play
         InstanceContext ctx;
         ControlService.MainControlClient svc;
         DocumentPage dp = null;
-        MediaPage mp = null;
+        //MediaPage mp = null;
+        MediasPage mp = null;
         WebBrowserPage wbp = null;
         PDFPage pp = null;
         ImagePage ip = null;
+        public int? PID;
         public enum PlayType
         {
             Document,
@@ -56,9 +59,11 @@ namespace ShowRoomSys.Client.Play
             Url,
             PDF,
             EXE,
-            Img
+            Img,
+            Swf,
+            Null
         }
-        PlayType now;
+        PlayType now = PlayType.Null;
         public MainWindow()
         {
             InitializeComponent();
@@ -170,10 +175,23 @@ namespace ShowRoomSys.Client.Play
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ImageBrush b = new ImageBrush();
-            b.ImageSource = new BitmapImage(new Uri(ConfigurationManager.AppSettings["background"]));
-            b.Stretch = Stretch.Fill;
-            this.Background = b;
+            if (ConfigurationManager.AppSettings["background"] != "")
+            {
+                ImageBrush b = new ImageBrush();
+                b.ImageSource = new BitmapImage(new Uri(ConfigurationManager.AppSettings["background"]));
+                b.Stretch = Stretch.Fill;
+                this.Background = b;
+            }
+            else
+            {
+                SolidColorBrush b = new SolidColorBrush();
+                b.Color = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("Black");
+                this.Background = b;
+            }
+            if (ConfigurationManager.AppSettings["backgroundflash"] != "")
+            {
+                this.LoadFlash(ConfigurationManager.AppSettings["backgroundflash"]);
+            }
             this.currentheight = this.Height;
             this.currentwidth = this.Width;
             this.currentleft = this.Left;
@@ -335,8 +353,6 @@ namespace ShowRoomSys.Client.Play
                 this.WindowState = System.Windows.WindowState.Maximized;
                 WindowStartupLocation = WindowStartupLocation.CenterOwner;
                 this.Topmost = false;
-                this.Left = 0.0;
-                this.Top = 0.0;
                 this.WindowStyle = System.Windows.WindowStyle.None;
                 this.Width = System.Windows.SystemParameters.PrimaryScreenWidth;
                 this.Height = System.Windows.SystemParameters.PrimaryScreenHeight;
@@ -347,6 +363,7 @@ namespace ShowRoomSys.Client.Play
             {
                 System.Windows.WindowState temp = this.WindowState;
                 System.Windows.WindowStyle style = this.WindowStyle;
+                WindowStartupLocation = WindowStartupLocation.CenterOwner;
                 this.WindowState = currentState;
                 this.WindowStyle = currentStyle;
                 currentState = temp;
@@ -449,6 +466,10 @@ namespace ShowRoomSys.Client.Play
                     now = PlayType.Url;
                     this.LoadUrl(files[CurrentFile]);
                     break;
+                case "swf":
+                    now = PlayType.Swf;
+                    this.LoadFlash();
+                    break;
                 case "jpg":
                 case "png":
                 case "bmp":
@@ -460,12 +481,29 @@ namespace ShowRoomSys.Client.Play
             }
 
         }
+        private void LoadFlash()
+        {
+            if (this.DealFile(System.IO.Path.GetFileName(files[CurrentFile])))
+            {
+                this.LoadFlash(config.GetValue("localpath", typeof(string)).ToString() + System.IO.Path.GetFileName(files[CurrentFile]));
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("加载文件失败！");
+            }
+        }
+        private void LoadFlash(string path)
+        {
+            Destroy();
+            wbp = new WebBrowserPage(path);
+            this.PageContext.Content = wbp;
+        }
         private void LoadMedia()
         {
             Destroy();
             if (this.DealFile(System.IO.Path.GetFileName(files[CurrentFile])))
             {
-                mp = new MediaPage(config.GetValue("localpath", typeof(string)).ToString() + System.IO.Path.GetFileName(files[CurrentFile]));
+                mp = new MediasPage(config.GetValue("localpath", typeof(string)).ToString() + System.IO.Path.GetFileName(files[CurrentFile]));
                 mp.AdjustView(this.WindowState == System.Windows.WindowState.Maximized);
                 this.PageContext.Content = mp;
             } 
@@ -507,11 +545,14 @@ namespace ShowRoomSys.Client.Play
         private void LoadEXE(string path)
         {
             Destroy();
+            //System.Windows.MessageBox.Show(path);
             Process p = new Process();
-            p.StartInfo.FileName = path;
+            string str = path.Replace("//", @"\");
+            p.StartInfo.FileName = str;
             try
             {
                 p.Start();
+                PID = p.Id;
             }
             catch (Win32Exception err)
             {
@@ -581,6 +622,17 @@ namespace ShowRoomSys.Client.Play
                 mp.Dispose();
             if (pp != null)
                 pp.Dispose();
+            if (PID.HasValue)
+            {
+                try
+                {
+                    var ps = System.Diagnostics.Process.GetProcessById(PID.Value);
+                    //ps.Dispose();
+                    ps.Kill();
+                    PID = null;
+                }
+                catch { }
+            }
         }
         #endregion
 

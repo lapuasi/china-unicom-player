@@ -2,25 +2,18 @@
     ViewBag.Title = "EditResources";
     Layout = "~/Views/Shared/MasterPage.cshtml";
 }
-
 @model ShowRommSys.Client.Web.Models.Resources
 <link type="text/css" rel="stylesheet" href="../../Content/uploadify.css" />
 <script type="text/javascript" src="../../Scripts/jquery.uploadify.v2.1.4.js"></script>
 <script type="text/javascript" src="../../Scripts/swfobject.js"></script>
 <script type="text/javascript">
-//    $(function () {
-//        $("input[name=Type]").click(function () {
-//            $("p[id^=Type]").hide();
-//            $("#Type" + $(this).val()).show();
-//        });
-//    });
     $(function () {
         $('#videofileInput').uploadify({
             'uploader': '../../Content/uploadify.swf',
             'script': '/Site/UploadFile',
             'folder': '/UploadFiles/',
             'cancelImg': '../../Images/Cancel.png',
-            'sizeLimit': 1024 * 1024 * 4 * 25, //100M
+            'sizeLimit': 1024 * 1024 * 1000, //1000M
             'multi': false,
             'onSelect': onSelect,
             'onComplete': funvideo,
@@ -58,13 +51,17 @@
                     <a href="javascript:$('#videofileInput').uploadifyUpload()">上传</a><input type="hidden" id="Uri" name="Uri" value="@Model.Uri"/>
                 </p>
             }
-            else
+            else if (Model.Type == 2)
             {
                 <p id="Type2" style=""><label class="field">URL地址：</label><input name="Uri" type="text" class="text" size="70" value="@Model.Uri"/></p>
             }
+            else
+            {
+                <p id="Type3" style=""><label class="field">应用程序目录：</label><input name="Uri" type="text" class="text" size="70" value="@Model.Uri"/></p> 
+            }
                 <p><label class="field">备注：</label><textarea name="Remark" class="text full" rows="5" id="Remark">@Model.Remark</textarea></p>
             </div>
-            <p><button type="submit">提交</button>&nbsp;<a href="@Url.Content("~/site/IndexResources")" class="btn-69">返回</a></p>
+            <p><button type="submit">保存</button>&nbsp;<a href="@Url.Content("~/site/IndexResources")" class="btn-69">返回</a></p>
         </div>
     }
 </div>

@@ -51,6 +51,9 @@
             });
         });
     }
+    $(function(){
+        InitPlayResource();
+    });
 </script>
 <div class="box corner-top">
     @using (Html.BeginForm())
@@ -58,12 +61,10 @@
         <div class="form">
             <p><label class="field">体验包名称：</label><input name="Name" id="Name" type="text" class="text" size="50" value="@Model.Name"/></p>
             <p><label class="field">备注：</label><textarea name="Remark" id="Remark" class="text full" rows="5">@Model.Remark</textarea></p>
-            <p><label class="field">包含展项：</label>
-                @Html.DropDownList("ddl_Items", (List<SelectListItem>)ViewData["Items"], "-展项-", new { onchange = "GetPlay()", @class = "small" })
+            <p><label class="field">包含展项：</label>@Html.DropDownList("ddl_Items", (List<SelectListItem>)ViewData["Items"], "-展项-", new { onchange = "GetPlay()", @class = "small" })
                 &nbsp;<select name="ddl_Play" class="small" id="ddl_Play"><option value="0">-方式-</option></select>&nbsp;<a id="btnAdd" href="javascript:AddResource();" class="btn-69">添加</a></p>
             <div id="listItem"></div>
-            <p><button type="submit">确定</button></p>
+            <p><button type="submit">保存</button>&nbsp;<a href="@Url.Content("~/site/IndexItemsPackage")" class="btn-69">返回</a></p>
         </div>
     }
-    <script type="text/javascript">InitPlayResource()</script>
 </div>

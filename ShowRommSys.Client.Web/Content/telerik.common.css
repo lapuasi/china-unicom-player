@@ -21,6 +21,8 @@
     border-style: solid;
 }
 
+.t-widget{border-left:0 none;border-right:0 none;}
+
 .t-link
 {
     cursor: pointer;
