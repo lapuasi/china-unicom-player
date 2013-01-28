@@ -124,6 +124,9 @@
             });
         });
     }
+    $(function(){
+        InitPlayResource();
+    });
 </script>
 <div class="box corner-top">
     @using (Html.BeginForm())
@@ -135,16 +138,12 @@
             <p><label class="field">陪同人员：</label>@Model.Escort</p>
             <p><label class="field">关注项目：</label>@Model.Follow</p>
             <p><label class="field">状态：</label>@Model.Status</p>
-            <p>
-                <a id="btnReturn" href="/site/calendar/" class="btn-69">返回</a>&nbsp;<a id="btnCancel"
-                href="javascript:Delete('@Model.Id');" class="btn-69">取消预约</a>&nbsp;<a id="btnClose" href="javascript:UpdateStatus('@Model.Id','未参观');"
-                    class="btn-69">关闭预约</a><span class="explain">关闭预约后，预约记录会被标记为"未参观"状态</span></p>
+            <p><a id="btnReturn" href="/site/calendar/" class="btn-69">返回</a>&nbsp;<a id="btnCancel" href="javascript:Delete('@Model.Id');" class="btn-69">取消预约</a>&nbsp;<a id="btnClose" href="javascript:UpdateStatus('@Model.Id','未参观');" class="btn-69">关闭预约</a><span class="explain">关闭预约后，预约记录会被标记为"未参观"状态</span></p>
             <div class="hr">
-                <p>
-                    <label class="field">展项配置：</label><select name="seltype" id="seltype" class="small" onchange="javascript:GetDate()"><option value="0">-类型-</option><option value="1">体验包</option><option value="2">展项</option></select>
-                        &nbsp;<select name="selpackage" id="selpackage" class="small" onchange="javascript:GetPlayItems()"><option value="0">-展项-</option></select>
-                        &nbsp;<select name="selitem" id="selitem" class="small"><option value="0">-方案-</option></select>
-			&nbsp;<a id="btnAdd" href="javascript:AddResource();" class="btn-69">添加</a></p>
+                <p><label class="field">展项配置：</label><select name="seltype" id="seltype" class="small" onchange="javascript:GetDate()"><option value="0">-类型-</option><option value="1">体验包</option><option value="2">展项</option></select>
+                    &nbsp;<select name="selpackage" id="selpackage" class="small" onchange="javascript:GetPlayItems()"><option value="0">-展项-</option></select>
+                    &nbsp;<select name="selitem" id="selitem" class="small"><option value="0">-方案-</option></select>
+                    &nbsp;<a id="btnAdd" href="javascript:AddResource();" class="btn-69">添加</a></p>
                 <div id="listItem"></div>
                 <p><button type="submit">保存配置</button></p>
             </div>
@@ -152,7 +151,7 @@
                 <p><label class="field">关注项目：</label>
                     @Html.DropDownList("ddl_Follow", (List<SelectListItem>)ViewData["list"], "-展项-", new { @class = "small" })
                     &nbsp;<select name="sellevel" class="small"><option value="0">-程度-</option><option value="强烈">强烈</option><option value="一般">一般</option></select>
-		    &nbsp;<a id="btnAddFeedback" href="javascript:;" class="btn-69">添加</a><span class="explain">强烈：客户表达出明显的签约合作意向；一般：客户对产品表示关注</span></p>
+                    &nbsp;<a id="btnAddFeedback" href="javascript:;" class="btn-69">添加</a><span class="explain">强烈：客户表达出明显的签约合作意向；一般：客户对产品表示关注</span></p>
                 <div id="flistItem"></div>
                 <p><label class="field">客户反馈：</label><textarea name="Feedback" id="Feedback" class="text full" rows="5">@Model.Feedback</textarea></p>
                 <p><button type="submit">保存反馈</button><span class="explain">保存反馈后，预约记录会被标记为"已参观"状态</span></p>
@@ -160,4 +159,3 @@
         </div>
     }
 </div>
-<script type="text/javascript">InitPlayResource()</script>

@@ -1,20 +1,27 @@
 ﻿@{
-    ViewBag.Title = "山东联通演示管理系统";
     Layout = null;
+
+    string name = "";
+    string number = "";
+
+    var db = new ShowRommSys.Client.Web.Models.ShowRoomSysEntities();
+    int id = int.Parse(Context.User.Identity.Name);
+    var user = db.Users.FirstOrDefault(e => e.Id == id);
+    name = user.Name;
+    number = user.Number;
+    var obj = db.UserLogSet.Where(e => e.UserId == id).ToList().Last();
+    DateTime dt = obj == null ? obj.LoginTime.Value : DateTime.Now;
 }
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>枣庄演示厅 - 集团客户演示厅管理平台</title>
-    <link href="../../Images/style.css" rel="stylesheet" type="text/css" />
-    <script src="../../js/jquery-1.8.3.min.js" type="text/javascript"></script>
-    <script src="../../js/common.js" type="text/javascript"></script>
+    <title>枣庄演示厅 - 行业应用演示管理平台</title>
+    <link type="text/css" rel="stylesheet" href="../../Images/style.css" />
+    <script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
     <script type="text/javascript">
         $.ajaxSetup({cache:false});
-        function ChangePwd() {
-            window.parent.content.location.href = '/Site/UserPassword/)';
-        }
         function LogOut() {
             $.ajax({
                 url: "/Account/LogOff",
@@ -33,24 +40,8 @@
 <body class="user">
     <div class="box corner-top corner-bottom">
         <div class="single">
-            <p class="username">
-                @{
-                    string name = "";
-                    string number = "";
-
-                    var db = new ShowRommSys.Client.Web.Models.ShowRoomSysEntities();
-                    int id = int.Parse(Context.User.Identity.Name);
-                    var user = db.Users.FirstOrDefault(e => e.Id == id);
-                    name = user.Name;
-                    number = user.Number;
-                    var obj = db.UserLogSet.Where(e => e.UserId == id).ToList().Last();
-                    DateTime dt = obj == null ? obj.LoginTime.Value : DateTime.Now;
-                }
-                山东联通欢迎您：<span class="color-orange">@name（@number）</span><em>|</em><a
-                    href='@Url.Content("~/Site/UserPassword/")' target="content">修改密码</a><em>|</em><a
-                        href="javascript:LogOut()">退出</a></p>
-            <p class="datetime">
-                您上次登录的时间是：<span class="color-orange">@dt.ToString("yyyy-MM-dd HH:mm:ss") &nbsp;@dt.ToString("dddd", new System.Globalization.CultureInfo("zh-cn"))</span></p>
+            <p class="username">山东联通欢迎您：<span class="color-orange">@name（@number）</span><em>|</em><a href='@Url.Content("~/Site/UserPassword/")' target="content">修改密码</a><em>|</em><a href="javascript:LogOut()">退出</a></p>
+            <p class="datetime">您上次登录的时间是：<span class="color-orange">@dt.ToString("yyyy-MM-dd HH:mm:ss") &nbsp;@dt.ToString("dddd", new System.Globalization.CultureInfo("zh-cn"))</span></p>
         </div>
     </div>
 </body>

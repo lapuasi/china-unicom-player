@@ -17,6 +17,6 @@
 </div>
 <script type="text/javascript">
 $(function(){
-    //$('input[name=Mac]').bind('keyup mouseup',function(){$(this).val($(this).val().replace(':','-'));});
+    $('input[name=Mac]').bind('blur',function(){$(this).val($(this).val().replace(/:/g,'-'));});
 });
 </script>

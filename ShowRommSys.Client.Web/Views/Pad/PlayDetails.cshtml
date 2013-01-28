@@ -30,15 +30,14 @@
                         var IDs = results.ToList().Select(e => e.ListId).Distinct();
                         foreach (var v in IDs)
                         {
-                    <li><a href="javascript:;" class="item"><span>
-                        @{string name = results.FirstOrDefault(e => e.ListId == v).ListName;}@name</span></a>
+                    <li><a href="javascript:;" class="item"><span>@{string name = results.FirstOrDefault(e => e.ListId == v).ListName;}@name</span></a>
                         <p class="location">
                             @{
-                          var items = results.Where(e => e.ListId == v);
-                          foreach (var i in items)
-                          {
-                                <a href="javascript:ShowFileList('@i.ItemId','@i.ItemName');">@i.ItemName</a>
-                          }
+                                var items = results.Where(e => e.ListId == v);
+                                foreach (var i in items)
+                                {
+                                    <a href="javascript:ShowFileList('@i.ItemId','@i.ItemName');">@i.ItemName</a>
+                                }
                             }
                         </p>
                     </li>
@@ -49,15 +48,14 @@
                         var results = DBContext.ShowItemsList.ToList();
                         foreach (var v in results)
                         {
-                    <li><a href="javascript:;" class="item"><span>
-                        @v.Name</span></a>
+                    <li><a href="javascript:;" class="item"><span>@v.Name</span></a>
                         <p class="location">
                             @{
                             var items = DBContext.Items.Where(e => e.ListId == v.Id);
-                            foreach (var i in items)
-                            {
-                                <a href="javascript:ShowFileList('@i.Id','@i.Name');">@i.Name</a>
-                            }
+                                foreach (var i in items)
+                                {
+                                    <a href="javascript:ShowFileList('@i.Id','@i.Name');">@i.Name</a>
+                                }
                             }
                         </p>
                     </li>
@@ -78,12 +76,21 @@
         $('.menu a.item').click(function(){var li=$(this).parents('li');var p=li.children('.location');if(p.length>0){p.toggle();return false;}else{$('.menu li').removeClass('current');li.addClass('current');}return true;});
     });
     function ShowFileList(id,name){
-        var url="/pad/PlayItems/"+id+"/"+name+"/";
+        var url='/pad/PlayItems/'+id+'/'+name+'/';
         $.getJSON(url, function(data){
-            $("#divObj").html(data);
+            $('#divObj').html(data);
         }).complete(function(){
             $('#divObj .playlist .subject').click(function(){$('#divObj .playlist li').removeClass('current');$(this).parents('li').addClass('current');}); //手动绑定新加载内容的伸缩事件
             $('#divObj .playlist li:first').addClass('current'); //展开第一个资源
+            $('#divObj a[class=play][href*=".wmv"],#divObj a[class=play][href*=".avi"]').bind('click',function(){$(this).hide().parents('p').find('a[class=pause]').bind('click',function(){$(this).attr('class',$(this).hasClass('pause')?'play':'pause');}).show();}).parents('p').find('a[class=pause]').hide(); //视频按钮替换
+
+            $('#divObj .filetype-doc, #divObj .filetype-xls').parents('li').each(function(idx){
+                var mac=/[\d-]{17}/.exec($(this).html())[0];
+                if(mac){
+                    $(this).find('.control').append('<a href="javascript:OptionPlay(9,\''+mac+'\');" class="zi">放大</a><a href="javascript:OptionPlay(10,\''+mac+'\');" class="zo">缩小</a><a href="javascript:OptionPlay(11,\''+mac+'\');" class="mu">上移</a><a href="javascript:OptionPlay(12,\''+mac+'\');" class="md">下移</a>');
+                }
+            });
+
         });
     }
     function OptionPlay(type, deviceMac) {

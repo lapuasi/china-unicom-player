@@ -56,28 +56,18 @@
     @using (Html.BeginForm("AddItems", "Site"))
     {
         <div class="form">
-            <p>
-                <label class="field">
-                    展项名称：</label><input type="hidden" value="@Model.Remark" id="Remark" name="Remark"/><input type="hidden" value="@Model.Name" id="Name" name="Name"/><input type="hidden" value="@Model.Id" id="Id" name="Id"/>
-                @Model.Name</p>
+            <p><label class="field">展项名称：</label><input type="hidden" value="@Model.Remark" id="Remark" name="Remark"/><input type="hidden" value="@Model.Name" id="Name" name="Name"/><input type="hidden" value="@Model.Id" id="Id" name="Id"/>@Model.Name</p>
             <div class="hr">
-                <p>
-                    <label class="field">
-                        播放名称：</label><input name="PlayName" id="PlayName" type="text" class="text" size="30" value='@ViewData["PlayName"].ToString()'/></p>
-                <p>
-                    <label class="field">
-                        播放资源：</label>
-                    @Html.DropDownList("ddl_ResourceType", (List<SelectListItem>)ViewData["ResourcesType"], "--类型--", new { onchange = "GetResources()", @class = "small" })
-                    &nbsp;<select name="ddl_Resource" id="ddl_Resource" class="small">
-                        <option value="0">-资源-</option>
-                    </select>&nbsp;
-                    @Html.DropDownList("ddl_Devices", (List<SelectListItem>)ViewData["Devices"], "--设备--", new { @class = "small" })
-                    &nbsp; <a id="btnAdd" href="javascript:AddResource();" class="btn-69">添加</a></p>
-                <div id="listResource">
-                </div>
+                <p><label class="field">播放名称：</label><input name="PlayName" id="PlayName" type="text" class="text" size="30" value='@ViewData["PlayName"].ToString()'/></p>
+                <p><label class="field">播放资源：</label>
+                    @Html.DropDownList("ddl_ResourceType", (List<SelectListItem>)ViewData["ResourcesType"], "-类型-", new { onchange = "GetResources()", @class = "small" })
+                    &nbsp;<select name="ddl_Resource" id="ddl_Resource" class="small"><option value="0">-资源-</option></select>
+                    &nbsp;@Html.DropDownList("ddl_Devices", (List<SelectListItem>)ViewData["Devices"], "-设备-", new { @class = "small" })
+                    &nbsp;<a id="btnAdd" href="javascript:AddResource();" class="btn-69">添加</a></p>
+                <div id="listResource"></div>
             </div>
             <p><button type="submit">确定</button></p>
         </div>
     }
-    <script>InitPlayResource()</script>
+    <script type="text/javascript">InitPlayResource()</script>
 </div>

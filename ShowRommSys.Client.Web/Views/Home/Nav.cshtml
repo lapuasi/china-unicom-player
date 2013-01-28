@@ -1,11 +1,11 @@
-﻿@model List<ShowRommSys.Client.Web.Common.MenuItem>
-@{
+﻿@{
     Layout = null;
 }
+@model List<ShowRommSys.Client.Web.Common.MenuItem>
 <div id="nav" class="easyui-accordion" fit="true" border="false">
 @foreach(var menu in Model)
 {
-    <div title=" @menu.menuname" iconCls="menuItem @menu.icon" >
+    <div title="@menu.menuname" iconCls="menuItem @menu.icon" >
             @if (menu.menus != null)
             {
                 <ul>

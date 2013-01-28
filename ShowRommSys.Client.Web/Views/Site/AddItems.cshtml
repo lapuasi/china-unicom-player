@@ -55,8 +55,7 @@
                     &nbsp;<select name="ddl_Resource" id="ddl_Resource" class="small"><option value="0">-资源-</option></select>
                     &nbsp;@Html.DropDownList("ddl_Devices", (List<SelectListItem>)ViewData["Devices"], "-设备-", new { @class = "small" })
                     &nbsp;<a id="btnAdd" href="javascript:AddResource();" class="btn-69">添加</a></p>
-                <div id="listResource">
-                </div>
+                <div id="listResource"></div>
                 <p class="explain">注：可选资源为展项包含资源，无法使用其他资源</p>
             </div>
             <p><button type="submit">提交</button></p>
